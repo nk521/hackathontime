@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/v4-shims.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'hackathon/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'hackathontime_main/main.css' %}">
 	{% if title %}
 		<title>{{ title }} - HackathonTi.me</title>
 	{% else %}
@@ -56,7 +56,14 @@
 	  </nav>
 	</div>
 
-	<div rolr="main" class="container">
+	<div rolr="main" class="container pt-4">
+		{% if messages %}
+			{% for message in messages %}
+				<div class="alert alert-{{ message.tags }}">
+					{{ message }}
+				</div>
+			{% endfor %}
+		{% endif %}
 		{% block body %}
 		{% endblock %}
 	</div>
