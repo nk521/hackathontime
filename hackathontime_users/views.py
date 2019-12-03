@@ -12,8 +12,8 @@ def register(request):
 			user_form.save()
 			# profile_form.save()
 			username = user_form.cleaned_data.get('username')
-			messages.success(request, f"Successfully created an account for {username}!")
-			return redirect('ht-home')
+			messages.success(request, f"Account for username \"{username}\" has been created. Login to your new account.")
+			return redirect('ht-login')
 		else:
 			messages.warning(request, 'Please correct the error below.')
 	else:
@@ -21,3 +21,7 @@ def register(request):
 		# profile_form = ProfileForm()
 
 	return render(request, 'hackathontime_users/register.html', {'user_form':user_form}) #, 'profile_form':profile_form})
+
+
+def profile(request):
+	return render(request,'hackathontime_users/profile.html')
