@@ -1,21 +1,43 @@
 # from django.db import models
 # from django.utils import timezone
-# from django.contrib.auth.models import User
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
 # from colleges import *
 
-# class Profile(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     user_college = models.CharField(max_length=200, choices=colleges_list, blank=True)
-#     user_bio = models.TextField(max_length=500, blank=True)
-#     user_state = models.CharField(max_length=30, blank=True)
+from django.db import models
+from django.contrib.auth.models import User
+from PIL import Image
 
-# @receiver(post_save, sender=User)
-# def create_user_profile(sender, instance, created, **kwargs):
-#     if created:
-#         Profile.objects.create(user=instance)
+class Profile(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE)
+	image = models.ImageField(default='default.jpg', upload_to='profile_pics')
 
-# @receiver(post_save, sender=User)
-# def save_user_profile(sender, instance, **kwargs):
-#     instance.profile.save()
+	def __str__(self):
+		return f'{self.user.username}\'s profile'
+
+	def save(self):
+		super().save()
+		
+		img = Image.open(self.image.path)
+
+		if img.height > 300 or img.width > 300:
+			min_side = min(img.height, img.width)
+			if min_side == img.height:
+			# https://opensource.com/life/15/2/resize-images-python
+				height = 300
+				hpercent = (height / float(img.size[1]))
+				width = int((float(img.size[0]) * float(hpercent)))
+				img.thumbnail((width, height))
+				img.save(self.image.path)
+
+			elif min_side == img.width:
+				width = 300
+				wpercent = (width / float(img.size[1]))
+				height = int((float(img.size[0]) * float(wpercent)))
+				img.thumbnail((width, height))
+				img.save(self.image.path)
+
+			else:
+				img.thumbnail((300,300))
+				img.save(self.image.path)
+
+
+# class Team(model.Model):

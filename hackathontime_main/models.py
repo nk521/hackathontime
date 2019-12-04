@@ -10,6 +10,10 @@ class Hackathon(models.Model):
     hackathon_content = models.TextField()
     hackathon_date_posted = models.DateTimeField(default=timezone.now)
     hackathon_date = models.DateTimeField()
+    hackathon_future = models.BooleanField(default=True)
+    hackathon_ongoing = models.BooleanField(default=False)
+    hackathon_past = models.BooleanField(default=False)
+    hackathon_period = models.IntegerField(default=24)
     hackathon_author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

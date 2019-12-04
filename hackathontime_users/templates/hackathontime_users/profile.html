@@ -1,4 +1,78 @@
 {% extends "hackathontime_main/base.html" %}
+{% load crispy_forms_tags %}
 {% block body %}
-	<h1>Hello! {{ user.username }} </h1>
+	<!-- <div class="content-section">
+		<div class="media">
+			<img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+			<div class="media-body">
+				<h2 class="account-heading">{{ user.username }}</h2>
+				<p class="text-secondary">{{ user.email }}</p>
+			</div>
+		</div>
+	</div> -->
+	<div class="content-section">
+
+	<div class="row my-2 media">
+		<div class="col-lg-4 order-lg-1 text-center">
+			<img src="{{ user.profile.image.url }}" width="300px" height="300px" class="mx-auto rounded-circle d-block">
+			<h6 class="mt-2">Upload a different photo</h6>
+			<!-- <label class="custom-file bg-dark">
+				<input type="file" id="file" class="custom-file-input btn btn-primary" value="Change profile picture">
+				<span class="custom-file-control"></span>
+			</label> -->
+		</div>
+		<div class="col-lg-8 order-lg-2">
+			<ul class="nav nav-tabs">
+				<li class="nav-item">
+					<a href="" data-target="#profile" data-toggle="tab" class="nav-link active">Profile</a>
+				</li>
+				<li class="nav-item">
+					<a href="" data-target="#edit" data-toggle="tab" class="nav-link">Edit</a>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div class="tab-pane active" id="profile">
+					<legend class="border-bottom pb-2 pt-2">Profile for {{ user.username }}</legend>
+					<div class="row">
+						<div class="col-md-6">
+							<h6>About</h6>
+							<p>
+								placeholder_bio
+							</p>
+							<h6>Team</h6>
+							<p>
+								placeholder_team_info
+							</p>
+						</div>
+						<div class="col-md-6">
+							<h6>skills</h6>
+							<a href="#" class="badge badge-dark badge-pill">placeholder_skills</a>
+							<hr>
+							<span class="badge badge-primary">Hackathons you joined in : placeholder_num</span>
+						</div>
+					</div>
+					<!--/row-->
+				</div>
+				<div class="tab-pane" id="edit">
+					<form method="POST" enctype="multipart/form-data">
+						{% csrf_token %}
+						<fieldset class="form-group">
+							<legend class="border-bottom pb-2 pt-2">Edit profile for {{ user.username }}</legend>
+							{{ user_form|crispy }}
+							{{ profile_form|crispy }}
+						</fieldset>
+						<div class="form-group">
+                        	<label class="col-lg-3 col-form-label form-control-label"></label>
+							<div class="col-lg-9">
+								<!-- <button class="btn btn-secondary" onclick="">Cancel</button> -->
+								<button class="btn btn-primary" type="submit">Save Changes</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		
+	</div>
+	</div>
 {% endblock body %}

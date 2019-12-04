@@ -1,16 +1,38 @@
 {% extends "hackathontime_main/base.html" %}
+
+{% block nav %}
+<div class="nav-scroller bg-white shadow-sm">
+  <nav class="nav nav-underline">
+    <a class="nav-link" href="#">
+      Ongoing
+      <span class="badge badge-pill bg-secondary text-white align-text-bottom">{{ on_going_count }}</span>
+    </a>
+    <a class="nav-link" href="#">
+      Upcoming
+      <span class="badge badge-pill bg-secondary text-white align-text-bottom">{{ future_count }}</span>
+    </a>
+    <a class="nav-link" href="#">
+      Past
+    </a>
+  </nav>
+</div>
+{% endblock nav %}
+
 {% block body %}
 <h1>HackathonTi.me</h1>
 <div class="row">
 	<div class="col-md-6">
 		<div class="my-3 p-3 bg-white rounded shadow-sm">
-			<h6 class="border-bottom border-gray pb-2 mb-0 text-center">Ongoing Hackathons</h6>
-			<div class="media text-muted pt-3">
-			  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-			    <strong class="d-block text-gray-dark">Hackathon Name</strong>
-			    Hackathon Info
-			  </p>
-			</div>
+			<h6 class="border-bottom border-gray pb-2 mb-0 text-center">Upcoming Hackathons</h6>
+				{% for hackathon in future_hackathons %}
+					<div class="media text-muted pt-3">
+					  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+					  	<span class="d-block text-right">{{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_period }} hours</span>
+					    <strong class="d-block text-gray-dark">{{ hackathon.hackathon_name }}</strong>
+					    {{ hackathon.hackathon_content|truncatechars:50 }}
+					  </p>
+					</div>
+				{% endfor %}
 			<small class="d-block text-right mt-3">
 			  <a href="#">All Ongoing hackathons</a>
 			</small>
@@ -18,35 +40,40 @@
 	</div>
 	<div class="col-md-6">
 		<div class="my-3 p-3 bg-white rounded shadow-sm">
-			<h6 class="border-bottom border-gray pb-2 mb-0 text-center">Upcoming Hackathons</h6>
+			<h6 class="border-bottom border-gray pb-2 mb-0 text-center">Team Ranking</h6>
 			<div class="media text-muted pt-3">
 			  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-			    <strong class="d-block text-gray-dark">Hackathon Name</strong>
-			    Hackathon Info
+			    <strong class="d-block text-gray-dark">Team Name</strong>
+			    Team user id
 			  </p>
 			</div>
+			<div class="media text-muted pt-3">
+			  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+			    <strong class="d-block text-gray-dark">Team Name</strong>
+			    Team user id
+			  </p>
+			</div>
+			<small class="d-block text-right mt-3">
+			  <a href="#">More</a>
+			</small>
+		</div>
+	</div>
+	<div class="col-md-6">
+		<div class="my-3 p-3 bg-white rounded shadow-sm">
+			<h6 class="border-bottom border-gray pb-2 mb-0 text-center">Ongoing Hackathons</h6>
+				{% for hackathon in on_going_hackathons %}
+					<div class="media text-muted pt-3">
+					  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+					  	<span class="d-block text-right">{{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_period }} hours</span>
+					    <strong class="d-block text-gray-dark">{{ hackathon.hackathon_name }}</strong>
+					    {{ hackathon.hackathon_content|truncatechars:50 }}
+					  </p>
+					</div>
+				{% endfor %}
 			<small class="d-block text-right mt-3">
 			  <a href="#">All upcoming hackathons</a>
 			</small>
 		</div>
 	</div>
-</div>
-<div class="my-3 p-3 bg-white rounded shadow-sm">
-	<h6 class="border-bottom border-gray pb-2 mb-0 text-center">Team Ranking</h6>
-	<div class="media text-muted pt-3">
-	  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-	    <strong class="d-block text-gray-dark">Team Name</strong>
-	    Team user id
-	  </p>
-	</div>
-	<div class="media text-muted pt-3">
-	  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-	    <strong class="d-block text-gray-dark">Team Name</strong>
-	    Team user id
-	  </p>
-	</div>
-	<small class="d-block text-right mt-3">
-	  <a href="#">More</a>
-	</small>
 </div>
 {% endblock body %}

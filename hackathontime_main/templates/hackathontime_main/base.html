@@ -21,6 +21,8 @@
 	  <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
+	  <div class="d-lg-none"><a class="navbar-brand mr-auto" href="{% url 'ht-home' %}">HackathonTi.me</a></div>
+	  
 
 	  <div class="navbar-collapse offcanvas-collapse" id="mainnav">
 	    <ul class="navbar-nav mr-auto">
@@ -52,16 +54,8 @@
 	  </div>
 	</nav>
 
-	<div class="nav-scroller bg-white shadow-sm">
-	  <nav class="nav nav-underline">
-	    <a class="nav-link" href="#">
-	      Ongoing
-	      <span class="badge badge-pill bg-dark align-text-bottom">2</span>
-	    </a>
-	    <a class="nav-link" href="#">Upcoming</a>
-	    <a class="nav-link" href="#">Past</a>
-	  </nav>
-	</div>
+	{% block nav %}
+	{% endblock %}
 
 	<div rolr="main" class="container pt-4">
 		{% if messages %}

@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from hackathontime_users import views as users_views
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('', include('hackathontime_main.urls')),
@@ -25,4 +28,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='hackathontime_users/login.html'), name='ht-login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='hackathontime_users/logout.html'), name='ht-logout'),
     path('profile/', users_views.profile, name='ht-profile')
-]
+] 
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
