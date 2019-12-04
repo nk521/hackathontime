@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 # from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .forms import UserForm , ProfileUpdateForm, UserUpdateForm
+from .forms import UserForm, ProfileUpdateForm, UserUpdateForm, CreateTeamForm
 from django.contrib.auth.decorators import login_required
 from PIL import Image
 
+# is_first_time = True
 
 def register(request):
 	if request.user.is_authenticated:
@@ -59,3 +60,24 @@ def profile(request):
 	}
 
 	return render(request, 'hackathontime_users/profile.html', context)
+
+@login_required
+def register_team(request):
+	if request.method == "POST":
+		team_form  = CreateTeamForm(request.POST, instance=request.user)
+
+		if team_form.is_valid():
+			team_form.save()
+			messages.success(request, f"Team '{team_form.cleaned_data.get('team_form')}' successfully created!")
+			return redirect('ht-profile')
+		else:
+			messages.warning(request, 'Please correct the errors below.')
+			return redirect('ht-profile')
+	else:
+		team_form  = CreateTeamForm(request, instance=request.user)
+
+	context = {
+		'team_form': team_form,
+	}
+
+	return render(request, 'hackathontime_users/team_register.html', context)

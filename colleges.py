@@ -3737,5 +3737,6 @@ colleges_list = [
 		("3735", 'Younis Sultan College of Engineering, Hyderabad'),
 		("3736", 'Younus College of Engineering and Technology, Kollam'),
 		("3737", 'Younus Institute of Technology, Kollam'),
-		("3738", 'Zeal College of Engineering and Research, Narhe')
+		("3738", 'Zeal College of Engineering and Research, Narhe'),
+		("3739", 'Select College')
 ]
