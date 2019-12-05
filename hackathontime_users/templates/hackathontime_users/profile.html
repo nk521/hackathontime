@@ -32,43 +32,56 @@
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="profile">
-					<legend class="border-bottom pb-2 pt-2">Profile for {{ user.username }}</legend>
-					<div class="row">
-						<div class="col-md-6">
-							<h6>About</h6>
-							<p>
-								placeholder_bio
-							</p>
-							<h6>Team</h6>
-							<p>
-								placeholder_team_info
-							</p>
-						</div>
-						<div class="col-md-6">
-							<h6>skills</h6>
-							<a href="#" class="badge badge-dark badge-pill">placeholder_skills</a>
-							<hr>
-							<span class="badge badge-primary">Hackathons you joined in : placeholder_num</span>
+					<div class="my-3 p-3 bg-white rounded">
+						<legend class="border-bottom border-gray pb-2 mb-2 text-center">Profile for {{ user.username }}</legend>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="my-3 p-3 bg-white rounded shadow">
+									<h6 class="border-bottom border-gray pb-2 mb-2 text-center">About</h6>
+									<p>
+										{{ user.profile.bio }}
+									</p>
+								</div>
+								<div class="my-3 p-3 bg-white rounded shadow">
+									<h6 class="border-bottom border-gray pb-2 mb-2 text-center">Skills</h6>
+									<a href="#" class="badge badge-dark badge-pill">placeholder_skills</a>
+								</div>
+							</div>
+							<div class="col-md-6">
+									{% if user.profile.is_in_a_team %}
+										<div class="my-3 p-3 bg-white rounded shadow">
+											<h6 class="border-bottom border-gray pb-2 mb-2 text-center">Team : {{ user.profile.team }}</h6>
+											<p>
+												Members : {{ team_members|join:", " }}
+											</p>
+										</div>
+									{% else %}
+										<div class="my-3 p-3 bg-white rounded">
+											<h6 class="pb-2 mb-2 text-center">Click here to create/join a team.</h6> <!--	make this a <a> -->
+										</div>
+									{% endif %}
+							</div>
 						</div>
 					</div>
 					<!--/row-->
 				</div>
 				<div class="tab-pane" id="edit">
-					<form method="POST" enctype="multipart/form-data">
-						{% csrf_token %}
-						<fieldset class="form-group">
-							<legend class="border-bottom pb-2 pt-2">Edit profile for {{ user.username }}</legend>
-							{{ user_form|crispy }}
-							{{ profile_form|crispy }}
-						</fieldset>
-						<div class="form-group">
-                        	<label class="col-lg-3 col-form-label form-control-label"></label>
-							<div class="col-lg-9">
-								<!-- <button class="btn btn-secondary" onclick="">Cancel</button> -->
-								<button class="btn btn-primary" type="submit">Save Changes</button>
+					<div class="my-3 p-3 bg-white rounded">
+						<form method="POST" enctype="multipart/form-data">
+							{% csrf_token %}
+							<fieldset class="form-group">
+								<legend class="border-bottom border-gray pb-2 mb-2 text-center">Edit profile for {{ user.username }}</legend>
+								{{ user_form|crispy }}
+								{{ profile_form|crispy }}
+							</fieldset>
+							<div class="form-group">
+	                        	<label class="col-lg-3 col-form-label form-control-label"></label>
+								<div class="col-lg-9">
+									<button class="btn btn-primary" type="submit">Save Changes</button>
+								</div>
 							</div>
-						</div>
-					</form>
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>

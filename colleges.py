@@ -1,4 +1,6 @@
 colleges_list = [
+		("", 'Select College'),
+		("X", 'Other'),
 		("0", 'A1 Global Institute of Engineering and Technology, Prakasam'),
 		("1", 'AAA College of Engineering and Technology, Thiruthangal'),
 		("2", 'AAR Mahaveer Engineering College, Keshavgiri'),
@@ -3738,5 +3740,4 @@ colleges_list = [
 		("3736", 'Younus College of Engineering and Technology, Kollam'),
 		("3737", 'Younus Institute of Technology, Kollam'),
 		("3738", 'Zeal College of Engineering and Research, Narhe'),
-		("3739", 'Select College')
 ]

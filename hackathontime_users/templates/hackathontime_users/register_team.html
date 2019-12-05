@@ -1,0 +1,21 @@
+{% extends "hackathontime_main/base.html" %}
+{% load crispy_forms_tags %}
+{% block body %}
+	<div class="content-section">
+		<form method="POST">
+			{% csrf_token %}
+			<fieldset class="form-group">
+				<legend class="border-bottom mb-4 pt-4">Create a team</legend>
+				{{ team_form|crispy }}
+			</fieldset>	
+			<div class="form-group">
+				<button class="btn btn-outline-info" type="submit">Create</button>
+			</div>		
+		</form>
+		<div class="border-top pt-3">
+			<small class="text-muted">
+				Do you want to join a team? <!-- <a href="{ url 'ht-join-team' %}" class="ml-2">Join a team</a> -->
+			</small>
+		</div>
+	</div>
+{% endblock body %}

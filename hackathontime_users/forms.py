@@ -7,12 +7,14 @@ from django.db import models
 
 class UserForm(UserCreationForm):
 	email = forms.EmailField(max_length=255, label="E-Mail")
+	college = forms.ChoiceField(choices=colleges_list, label="College")
+	gender = forms.ChoiceField(choices=[('', "Choose your gender"),('F', 'Female'),('M', 'Male'),("O", "Others"),("X", "Prefer not to say")], label="Gender")
 	first_name = forms.CharField(max_length=255, label="First Name")
 	last_name = forms.CharField(max_length=255, label="Last Name")
 	class Meta:
 		model=User
 		# fields = '__all__'
-		fields = ('first_name', 'last_name', 'username', 'email')
+		fields = ('first_name', 'last_name', 'gender', 'college', 'username', 'email')
 
 # class ProfileForm(forms.ModelForm):
 # 	user_college = forms.ChoiceField(choices=colleges_list, label="College")
@@ -29,12 +31,12 @@ class CreateTeamForm(forms.ModelForm):
 		fields = ['team_name']
 
 class UserUpdateForm(forms.ModelForm):
-	email = forms.EmailField(max_length=255, label="E-Mail")
 	class Meta:
 		model=User
-		fields = ('username', 'email')
+		fields = ['username']
 
 class ProfileUpdateForm(forms.ModelForm):
+	image = forms.ImageField(required=False, widget=forms.FileInput)
 	class Meta:
 		model=Profile
-		fields = ['image']
+		fields = ['bio','image']
