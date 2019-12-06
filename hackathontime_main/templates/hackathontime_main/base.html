@@ -36,6 +36,11 @@
 		      <li class="nav-item">
 		        <a class="nav-link" href="{% url 'ht-logout' %}">Logout</a>
 		      </li>
+		      {% if user.is_superuser %}
+		      	<li class="nav-item">
+		        	<a class="nav-link" href="/admin">Admin</a>
+		      	</li>
+		      {% endif %}
 	      {% else %}
 		      <li class="nav-item">
 		        <a class="nav-link" href="{% url 'ht-register' %}">Register</a>

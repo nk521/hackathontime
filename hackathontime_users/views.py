@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
-# from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .forms import UserForm, ProfileUpdateForm, UserUpdateForm, CreateTeamForm
+from .forms import UserForm, ProfileUpdateForm, CreateTeamForm
 from django.contrib.auth.decorators import login_required
 from .models import Team, Profile
 from PIL import Image
@@ -23,45 +22,45 @@ def register(request):
 		else:
 			messages.warning(request, 'Please correct the errors below.')
 	else:
-		user_form = UserForm(initial={'max_number': '3'})
+		user_form = UserForm()
 		# profile_form = ProfileForm()
 
-	return render(request, 'hackathontime_users/register.html', {'user_form':user_form}) #, 'profile_form':profile_form})
+	return render(request, 'hackathontime_users/register.html', {'user_form': user_form}) #, 'profile_form': profile_form})
 
 @login_required
 def profile(request):
 	if request.method == "POST":
-		user_form = UserUpdateForm(request.POST, instance=request.user)
+		# user_form = UserUpdateForm(request.POST, instance=request.user)
 		profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
 
 		if user_form.is_valid() and profile_form.is_valid():
 			# image check
-			print(profile_form.cleaned_data.get('image').name)
+			# print(profile_form.cleaned_data.get('image').name)
 			curr_image = Image.open(profile_form.cleaned_data.get('image'))
 			if curr_image.height < 295 or curr_image.width < 295:
 				messages.warning(request, 'Image must be larger than 300x300 pixels.')
 				curr_image.close()
 				return redirect('ht-profile')
 			
-			curr_image.close()
 
 			# save form
-			user_form.save()
+			# user_form.save()
 			profile_form.save()
-			username = user_form.cleaned_data.get('username')
-			messages.success(request, f"Account successfully updated for {username}'s profile!")
+			curr_image.close()
+			# username = user_form.cleaned_data.get('username')
+			messages.success(request, f"Account successfully updated for {request.user.username}'s profile!")
 			return redirect('ht-profile')
 		else:
 			messages.warning(request, 'Please correct the errors below.')
 			return redirect('ht-profile')
 
 	else:
-		user_form = UserUpdateForm(instance=request.user)
+		# user_form = UserUpdateForm(instance=request.user)
 		profile_form = ProfileUpdateForm(instance=request.user.profile)
 		team_members = Profile.objects.filter(team=request.user.profile.team)
 
 	context = {
-		'user_form' : user_form,
+		# 'user_form' : user_form,
 		'profile_form' : profile_form,
 		'team_members': team_members,
 	}
@@ -102,3 +101,25 @@ def register_team(request):
 	}
 
 	return render(request, 'hackathontime_users/register_team.html', context)
+
+
+@login_required
+def profile_view(request, **kwargs):
+	username = kwargs['profile']
+	if request.user.username == username:
+		return redirect('ht-profile')
+
+	profile_object = Profile.objects.filter(user__username=username)
+	if profile_object:
+		profile_object = profile_object[0]
+		team_members = Profile.objects.filter(team=profile_object.team)
+
+		context={
+			'profile': profile_object,
+			'team_members': team_members,
+		}
+		return render(request, 'hackathontime_users/profile_slug.html', context)
+
+	else:
+		messages.warning(request, 'User doesn\'t exists.')
+		return redirect('ht-home')

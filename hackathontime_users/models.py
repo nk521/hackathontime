@@ -8,7 +8,7 @@ from PIL import Image
 
 class Team(models.Model):
 	team_name = models.CharField(max_length=20,unique=True)
-	# team_members = models.ManyToManyField(Profile, blank=True)#, on_delete=models.DO_NOTHING)
+	team_points = models.FloatField(default=0.0)
 
 	def __str__(self):
 		return f'{self.team_name}'

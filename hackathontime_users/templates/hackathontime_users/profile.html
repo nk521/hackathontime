@@ -37,9 +37,15 @@
 						<div class="row">
 							<div class="col-md-6">
 								<div class="my-3 p-3 bg-white rounded shadow">
+									<h6 class="border-bottom border-gray pb-2 mb-2 text-center">whoami</h6>
+									<p class="text-center mb-0">
+										Name : {{ user.get_full_name }}
+									</p>
+								</div>
+								<div class="my-3 p-3 bg-white rounded shadow">
 									<h6 class="border-bottom border-gray pb-2 mb-2 text-center">About</h6>
 									<p>
-										{{ user.profile.bio }}
+										{{ user.profile.bio|wordwrap:44 }}<br>
 									</p>
 								</div>
 								<div class="my-3 p-3 bg-white rounded shadow">
@@ -52,12 +58,12 @@
 										<div class="my-3 p-3 bg-white rounded shadow">
 											<h6 class="border-bottom border-gray pb-2 mb-2 text-center">Team : {{ user.profile.team }}</h6>
 											<p>
-												Members : {{ team_members|join:", " }}
+												Members : {{ team_members|join:", "|wordwrap:44 }}
 											</p>
 										</div>
 									{% else %}
 										<div class="my-3 p-3 bg-white rounded">
-											<h6 class="pb-2 mb-2 text-center">Click here to create/join a team.</h6> <!--	make this a <a> -->
+											<h6 class="pb-2 mb-2 text-center"><a href="{% url 'ht-register-team' %}">Click here to create/join a team.</a></h6>
 										</div>
 									{% endif %}
 							</div>
@@ -71,7 +77,6 @@
 							{% csrf_token %}
 							<fieldset class="form-group">
 								<legend class="border-bottom border-gray pb-2 mb-2 text-center">Edit profile for {{ user.username }}</legend>
-								{{ user_form|crispy }}
 								{{ profile_form|crispy }}
 							</fieldset>
 							<div class="form-group">

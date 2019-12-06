@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'hackathontime_main.apps.HackathontimeMainConfig',
     'hackathontime_users.apps.HackathontimeUsersConfig',
     'crispy_forms',
+    'djangocms_admin_style',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
