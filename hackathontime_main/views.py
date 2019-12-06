@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Hackathon
-from django.views.generic import ListView
 
 def check_hackathon_time(hackathon_date):
 	# if 
@@ -23,6 +22,3 @@ def home(request):
 
 # def about(request):
 # 	return HttpResponse("<h1>about</h1>")
-
-class PostListView(ListView):
-	model = Hackathon

@@ -6,11 +6,6 @@
 	<div class="row my-2 media">
 		<div class="col-lg-4 order-lg-1 text-center">
 			<img src="{{ profile.image.url }}" width="300px" height="300px" class="mx-auto rounded-circle d-block">
-			<h6 class="mt-2">Upload a different photo</h6>
-			<!-- <label class="custom-file bg-dark">
-				<input type="file" id="file" class="custom-file-input btn btn-primary" value="Change profile picture">
-				<span class="custom-file-control"></span>
-			</label> -->
 		</div>
 		<div class="col-lg-8 order-lg-2">
 			<div class="tab-content">
@@ -22,14 +17,13 @@
 								<h6 class="border-bottom border-gray pb-2 mb-2 text-center">Info</h6>
 								<p class="mb-0">
 									Name : {{ profile.user.get_full_name }}<br>
-									College : {{ profile.get_college_display }}<br>
 
 								</p>
 							</div>
 							<div class="my-3 p-3 bg-white rounded shadow">
 								<h6 class="border-bottom border-gray pb-2 mb-2 text-center">About</h6>
 								<p class="mb-0">
-									{{ profile.bio|wordwrap:44 }}<br>
+									{{ profile.bio|urlize }}<br>
 								</p>
 							</div>
 						</div>
@@ -38,7 +32,10 @@
 								<div class="my-3 p-3 bg-white rounded shadow">
 									<h6 class="border-bottom border-gray pb-2 mb-2 text-center">Team : {{ profile.team.team_name }}</h6>
 									<p>
-										Members : {{ team_members|join:", "|wordwrap:44 }}
+										Members :
+										{% for team_member in team_members %}
+											<a href="{% url 'ht-profile-view' team_member %}">{{ team_member }}</a>{% if not forloop.last %}, {% endif %}
+										{% endfor %}
 									</p>
 								</div>
 							{% else %}

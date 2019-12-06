@@ -33,7 +33,8 @@ def profile(request):
 		# user_form = UserUpdateForm(request.POST, instance=request.user)
 		profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
 
-		if user_form.is_valid() and profile_form.is_valid():
+		# if user_form.is_valid() and profile_form.is_valid():
+		if profile_form.is_valid():
 			# image check
 			# print(profile_form.cleaned_data.get('image').name)
 			curr_image = Image.open(profile_form.cleaned_data.get('image'))
@@ -116,7 +117,7 @@ def profile_view(request, **kwargs):
 
 		context={
 			'profile': profile_object,
-			'team_members': team_members,
+			'team_members': [str(team_member) for team_member in team_members],
 		}
 		return render(request, 'hackathontime_users/profile_slug.html', context)
 

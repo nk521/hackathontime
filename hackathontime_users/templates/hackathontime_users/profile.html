@@ -57,8 +57,11 @@
 									{% if user.profile.is_in_a_team %}
 										<div class="my-3 p-3 bg-white rounded shadow">
 											<h6 class="border-bottom border-gray pb-2 mb-2 text-center">Team : {{ user.profile.team }}</h6>
-											<p>
-												Members : {{ team_members|join:", "|wordwrap:44 }}
+											<p class="mb-0">
+												Members :
+												{% for team_member in team_members %}
+													<a href="{% url 'ht-profile-view' team_member %}">{{ team_member }}</a>{% if not forloop.last %}, {% endif %}
+												{% endfor %}
 											</p>
 										</div>
 									{% else %}
