@@ -11,7 +11,7 @@ def check_hackathon_time():
 			hackathon_date = hackathon_object.hackathon_date.astimezone(pytz.timezone("Asia/Kolkata"))
 			hackathon_date_plus_duration = hackathon_date + timedelta(hours=hackathon_object.hackathon_period)
 			now = datetime.now().astimezone(pytz.timezone('Asia/Kolkata'))
-			print(hackathon_object.hackathon_name, hackathon_date, hackathon_date_plus_duration)
+			# print(hackathon_object.hackathon_name, hackathon_date, hackathon_date_plus_duration)
 			if now < hackathon_date:
 				hackathon_object.hackathon_past = False
 				hackathon_object.hackathon_ongoing = False
