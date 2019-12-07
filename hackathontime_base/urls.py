@@ -30,6 +30,7 @@ urlpatterns = [
     path('profile/', users_views.profile, name='ht-profile'),
     path('profile/<slug:profile>', users_views.profile_view, name='ht-profile-view'),
     path('team/register', users_views.register_team, name='ht-register-team'),
+    path('h/', users_views.hackathon_view, name='ht-hackathon-view'),
 ] 
 
 if settings.DEBUG:

@@ -124,3 +124,6 @@ def profile_view(request, **kwargs):
 	else:
 		messages.warning(request, 'User doesn\'t exists.')
 		return redirect('ht-home')
+
+def hackathon_view(request):
+	return render(request, 'hackathontime_users/hackathon_slug.html')
