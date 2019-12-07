@@ -26,7 +26,7 @@
 			<h6 class="border-bottom border-gray pb-2 mb-0 text-center">Upcoming Hackathons</h6>
 				{% for hackathon in future_hackathons %}
 					<div class="media text-muted pt-3">
-					  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+					  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray text-truncate">
 					  	<span class="d-block text-right">{{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_period }} hours</span>
 					    <strong class="d-block text-gray-dark">{{ hackathon.hackathon_name }}</strong>
 					    {{ hackathon.hackathon_content|truncatechars:50 }}
@@ -42,13 +42,7 @@
 		<div class="my-3 p-3 bg-white rounded shadow-sm">
 			<h6 class="border-bottom border-gray pb-2 mb-0 text-center">Team Ranking</h6>
 			<div class="media text-muted pt-3">
-			  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-			    <strong class="d-block text-gray-dark">Team Name</strong>
-			    Team user id
-			  </p>
-			</div>
-			<div class="media text-muted pt-3">
-			  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+			  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray text-truncate">
 			    <strong class="d-block text-gray-dark">Team Name</strong>
 			    Team user id
 			  </p>
@@ -63,7 +57,7 @@
 			<h6 class="border-bottom border-gray pb-2 mb-0 text-center">Ongoing Hackathons</h6>
 				{% for hackathon in on_going_hackathons %}
 					<div class="media text-muted pt-3">
-					  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+					  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray text-truncate">
 					  	<span class="d-block text-right">{{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_period }} hours</span>
 					    <strong class="d-block text-gray-dark">{{ hackathon.hackathon_name }}</strong>
 					    {{ hackathon.hackathon_content|truncatechars:50 }}

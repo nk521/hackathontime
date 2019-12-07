@@ -1,13 +1,38 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Hackathon
+from datetime import datetime, timedelta, timezone
+import pytz
 
-def check_hackathon_time(hackathon_date):
-	# if 
-	pass
+def check_hackathon_time():
+	future_and_ongoing_hackathons = [Hackathon.objects.filter(hackathon_future=True), Hackathon.objects.filter(hackathon_ongoing=True)]
+	for hackathons in future_and_ongoing_hackathons:
+		for hackathon_object in hackathons:
+			hackathon_date = hackathon_object.hackathon_date.astimezone(pytz.timezone("Asia/Kolkata"))
+			hackathon_date_plus_duration = hackathon_date + timedelta(hours=hackathon_object.hackathon_period)
+			now = datetime.now().astimezone(pytz.timezone('Asia/Kolkata'))
+			print(hackathon_object.hackathon_name, hackathon_date, hackathon_date_plus_duration)
+			if now < hackathon_date:
+				hackathon_object.hackathon_past = False
+				hackathon_object.hackathon_ongoing = False
+				hackathon_object.hackathon_future = True
+
+			elif hackathon_date <= now <= hackathon_date_plus_duration:
+				hackathon_object.hackathon_past = False
+				hackathon_object.hackathon_ongoing = True
+				hackathon_object.hackathon_future = False
+
+			else:
+				hackathon_object.hackathon_past = True
+				hackathon_object.hackathon_ongoing = False
+				hackathon_object.hackathon_future = False
+			hackathon_object.save()
+
+
 
 #count Hackahton.objects.count
 def home(request):
+	check_hackathon_time()
 	future_hackathons = Hackathon.objects.filter(hackathon_future=True)
 	# past_hackathons = Hackathon.objects.filter(hackathon_past=True)
 	on_going_hackathons = Hackathon.objects.filter(hackathon_ongoing=True)

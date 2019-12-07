@@ -24,6 +24,6 @@ class Hackathon(models.Model):
     def __str__(self):
         return self.hackathon_name
 
-    def save(self, *args, **kwargs):
-        self.hackathon_
-        #super(Profile, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.hackathon_
+    #     #super(Profile, self).save(*args, **kwargs)
