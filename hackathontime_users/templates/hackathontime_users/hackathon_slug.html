@@ -2,19 +2,56 @@
 {% block body %}
 	<div class="content-section">
 		<div class="row">
-			<legend class="border-bottom border-gray pb-2 mb-2 text-center">
-				Hackathon Name
+			<legend class="border-bottom border-gray pb-3 pt-0 text-center">
+				{ hackathon.name }}
 			</legend>
-			<div class="col-md-8">
-				<div class="my-3 p-3 bg-white rounded shadow text-center">
-					All info about hackathon here
+			<div class="col-lg-8">
+				<div class="my-1 p-3 bg-white">
+					<div class="row">
+						<div class="col">
+							<legend class="pb-2 border-gray border-bottom">
+								Details
+							</legend>
+						</div>
+						<div class="col">
+							<legend class="pb-2 border-gray text-right">
+								44 teams registered
+							</legend>
+						</div>
+					</div>
+					{ hackathon.hackathon_info }}
 				</div>
 			</div>
-			<div class="col-md-4">
-				<div class="my-3 p-3 bg-white rounded shadow text-center">
-					Maps and shit here
+			
+			<!-- MAP -->
+			<div class="col-lg-4">
+				<div class="my-4 p-1 bg-white text-center rounded shadow">
+					<legend class="border-gray text-center">Map</legend>
+					<div id="map-container-google-1" class="z-depth-1-half map-container">
+					  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1750.388718685065!2d77.23057455992743!3d28.666381981541935!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd0683919c3b%3A0xf5fc331b74c2b9e2!2sIndira%20Gandhi%20Delhi%20Technical%20University%20for%20Women!5e0!3m2!1sen!2sin!4v1575893053151!5m2!1sen!2sin" frameborder="0"
+					    style="border:0" allowfullscreen></iframe>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<footer style="position: fixed; height: 80px; bottom: 0; width: 100%;" class="fixed-bottom border-gray bg-dark shadow">
+  		<div class="container my-3">
+				<div class="row">
+					<div class="col d-none d-md-block my-auto">
+			  			<div class="container">
+			    			<span class="text-white">{ hackathon.datetime }}</span>
+			    		</div>
+			    		<div class="container">
+			    			<span class="text-white"><b>{ hackathon.hackathonname }}</b></span>
+			    		</div>
+			    	</div>
+			    	<div class="col text-center my-auto">
+			    		<div class="container">
+			    			<span class="text-white"><button type="submit" class="btn btn-outline-primary btn-lg ">Register</button></span>
+			    		</div>
+			    	</div>
+			    </div>
+	    	</div>
+	</footer>
 {% endblock body %}
