@@ -16,7 +16,7 @@
 		<title>HackathonTi.me</title>
 	{% endif %}
 </head>
-<body>
+<body style="background-color: #f6f7f8;">
 	<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
 	  <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
 	    <span class="navbar-toggler-icon"></span>
@@ -62,7 +62,7 @@
 	{% block nav %}
 	{% endblock %}
 
-	<div class="container pt-4">
+	<div class="container pt-4" >
 		{% if messages %}
 			{% for message in messages %}
 				<div class="alert alert-{{ message.tags }}">
