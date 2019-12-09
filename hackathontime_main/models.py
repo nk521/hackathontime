@@ -19,7 +19,7 @@ class Hackathon(models.Model):
     hackathon_date_posted = models.DateTimeField(default=timezone.now)
     hackathon_location_name = models.CharField(max_length=255, null=True)
     hackathon_location_url = models.URLField(max_length=255, null=True)
-    hackathon_team_going = models.ManyToManyField(Team)
+    hackathon_team_going = models.ManyToManyField(Team, required=False. null=True)
 
     def __str__(self):
         return self.hackathon_name
