@@ -5,6 +5,7 @@ from colleges import *
 from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
+from django.utils.text import slugify
 
 class Team(models.Model):
 	team_name = models.CharField(max_length=20,unique=True)
@@ -21,11 +22,13 @@ class Profile(models.Model):
 	team = models.ForeignKey(Team, on_delete=models.SET_NULL, blank=True, null=True)
 	is_in_a_team = models.BooleanField(default=False)
 	bio = models.TextField(max_length=500, null=True, blank=True)
+	slug = models.CharField(max_length=255, blank=True, null=True)
 
 	def __str__(self):
 		return f'{self.user.username}'
 
 	def save(self, *args, **kwargs):
+		self.slug = slugify(self.user.username)
 		super(Profile, self).save(*args, **kwargs)
 		
 		img = Image.open(self.image.path)

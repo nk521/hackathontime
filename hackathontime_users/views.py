@@ -4,7 +4,7 @@ from .forms import UserForm, ProfileUpdateForm, CreateTeamForm
 from django.contrib.auth.decorators import login_required
 from .models import Team, Profile
 from PIL import Image
-
+from hackathontime_main.models import Hackathon
 
 def register(request):
 	if request.user.is_authenticated:
@@ -106,11 +106,11 @@ def register_team(request):
 
 @login_required
 def profile_view(request, **kwargs):
-	username = kwargs['profile']
-	if request.user.username == username:
+	slug = kwargs['profile_slug']
+	if request.user.profile.slug == slug:
 		return redirect('ht-profile')
 
-	profile_object = Profile.objects.filter(user__username=username)
+	profile_object = Profile.objects.filter(user__profile__slug=slug)
 	if profile_object:
 		profile_object = profile_object[0]
 		team_members = Profile.objects.filter(team=profile_object.team)
@@ -125,5 +125,28 @@ def profile_view(request, **kwargs):
 		messages.warning(request, 'User doesn\'t exists.')
 		return redirect('ht-home')
 
-def hackathon_view(request):
-	return render(request, 'hackathontime_users/hackathon_slug.html')
+def hackathon_view(request, **kwargs):
+	slug = kwargs['hackathon_slug']
+	hackathon_object = Hackathon.objects.filter(hackathon_slug=slug)
+	if hackathon_object:
+		if request.method == "POST":
+			if not request.user.profile.is_in_a_team:
+				messages.warning(request, "You're not in a team. Either make one team or join one.")
+				return redirect('ht-register-team')
+			# print(dir(request.user))
+			curr_team = request.user.profile.team
+			curr_hackathon = hackathon_object[0]
+			curr_hackathon.hackathon_team_going.add(curr_team)
+			curr_hackathon.save()
+			messages.success(request, f"Marked your team '{curr_team.team_name}' as going.")
+			# return render(request, 'hackathontime_users/hackathon_slug.html', context)
+
+		hackathon_object = hackathon_object[0]
+		context={
+			'hackathon': hackathon_object,
+			'registered': hackathon_object.hackathon_team_going.filter(team_name=request.user.profile.team)
+		}
+		return render(request, 'hackathontime_users/hackathon_slug.html', context)
+	else:
+		messages.warning(request, 'Hackathon doesn\'t exists.')
+		return redirect('ht-home')

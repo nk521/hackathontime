@@ -28,9 +28,10 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='hackathontime_users/login.html'), name='ht-login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='ht-home'), name='ht-logout'),
     path('profile/', users_views.profile, name='ht-profile'),
-    path('profile/<slug:profile>', users_views.profile_view, name='ht-profile-view'),
+    path('profile/<slug:profile_slug>', users_views.profile_view, name='ht-profile-view'),
     path('team/register', users_views.register_team, name='ht-register-team'),
-    path('h/', users_views.hackathon_view, name='ht-hackathon-view'),
+    path('hackathon/<slug:hackathon_slug>', users_views.hackathon_view, name='ht-hackathon-view'),
+    # path team view
 ] 
 
 if settings.DEBUG:

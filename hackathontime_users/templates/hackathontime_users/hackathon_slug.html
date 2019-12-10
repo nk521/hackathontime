@@ -3,8 +3,13 @@
 	<div class="content-section">
 		<div class="row">
 			<legend class="border-bottom border-gray pb-3 pt-0 text-center">
-				{ hackathon.name }}
+				{{ hackathon.hackathon_name }}
 			</legend>
+			<div class="d-md-none col text-right">
+				<legend class="pb-2 border-gray text-right">
+					{{ hackathon.hackathon_team_going.count }} team{{ hackathon.hackathon_team_going.count|pluralize:"s" }} registered
+				</legend>
+			</div>
 			<div class="col-lg-8">
 				<div class="my-1 p-3">
 					<div class="row">
@@ -13,50 +18,64 @@
 								Details
 							</legend>
 						</div>
-						<div class="col-5">
+						<div class="d-none d-md-block col-5">
 							<legend class="pb-2 border-gray text-right">
-								44 teams registered
+								{{ hackathon.hackathon_team_going.count }} team{{ hackathon.hackathon_team_going.count|pluralize:"s" }} registered
 							</legend>
 						</div>
 					</div>
-					{ hackathon.hackathon_info }}
+					<div class="pb-3">{{ hackathon.hackathon_content }}</div>
+					<div>Venue : {{ hackathon.hackathon_location_name }} 
+					{% if hackathon.hackathon_location_address %} | {{ hackathon.hackathon_location_address }}
+					{% endif %}</div>
 				</div>
 				<div class="my-1 p-3">
 					<legend class="pb-2 border-gray border-bottom">
 						Teams registered
 					</legend>
-					<div><a href="">Team 1</a></div>
-					<div><a href="">Team 2</a></div>
-					<div><a href="">Team 3</a></div>
+					{% for team in hackathon.hackathon_team_going.all %}
+						<div><a href="">{{ team.team_name }}</a></div>
+					{% endfor %}
 
 				</div>
 			</div>
 			<!-- MAP -->
-			<div class="col-lg-4">
-				<div class="my-4 p-1 bg-white text-center rounded shadow">
-					<legend class="border-gray text-center">Map</legend>
-					<div id="map-container-google-1" class="z-depth-1-half map-container">
-					  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1750.388718685065!2d77.23057455992743!3d28.666381981541935!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd0683919c3b%3A0xf5fc331b74c2b9e2!2sIndira%20Gandhi%20Delhi%20Technical%20University%20for%20Women!5e0!3m2!1sen!2sin!4v1575893053151!5m2!1sen!2sin" frameborder="0"
-					    style="border:0" allowfullscreen></iframe>
+			{% if hackathon.hackathon_location_url != "null" %}
+				<div class="col-lg-4">
+					<div class="my-4 p-1 bg-white text-center rounded shadow">
+						<legend class="border-gray text-center">Map</legend>
+						<div id="map-container-google-1" class="z-depth-1-half map-container">
+						  <iframe src="{{ hackathon.hackathon_location_url }}" frameborder="0"
+						    style="border:0" allowfullscreen></iframe>
+						</div>
 					</div>
 				</div>
-			</div>
+			{% endif %}
+		</div> <!-- this ends parent row div -->
+		<div style="margin-bottom: 5em">
 		</div>
 	</div>
-	<footer style="position: fixed; height: 80px; bottom: 0; width: 100%;" class="fixed-bottom border-gray bg-dark shadow">
+	<footer style="position: fixed; height: 5em; bottom: 0; width: 100%;" class="fixed-bottom border-gray bg-dark shadow">
   		<div class="container my-3">
 				<div class="row">
 					<div class="col d-none d-md-block my-auto">
 			  			<div class="container">
-			    			<span class="text-white">{ hackathon.datetime }}</span>
+			    			<span class="text-white">{{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_period }} hours</span>
 			    		</div>
 			    		<div class="container">
-			    			<span class="text-white"><b>{ hackathon.hackathonname }}</b></span>
+			    			<span class="text-white"><b>{{ hackathon.hackathon_name }}</b></span>
 			    		</div>
 			    	</div>
 			    	<div class="col text-center my-auto">
 			    		<div class="container">
-			    			<span class="text-white"><button type="submit" class="btn btn-outline-primary btn-lg ">Register</button></span>
+			    			{% if registered %}
+			    				<span class="text-white"><button type="submit" class="btn btn-outline-primary btn-lg" disabled>Already Registered</button></span>
+		    				{% else %}
+				    			<form method="POST">
+				    				{% csrf_token %}
+				    				<span class="text-white"><button type="submit" class="btn btn-outline-primary btn-lg ">Register</button></span>
+				    			</form>
+			    			{% endif %}
 			    		</div>
 			    	</div>
 			    </div>
