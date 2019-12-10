@@ -40,7 +40,7 @@
 								<div class="my-3 p-3 bg-white rounded shadow">
 									<h6 class="border-bottom border-gray pb-2 mb-2 text-center">About</h6>
 									<p>
-										{{ user.profile.bio|wordwrap:44 }}<br>
+										{{ user.profile.bio }}<br>
 									</p>
 								</div>
 								<div class="my-3 p-3 bg-white rounded shadow">
@@ -51,7 +51,7 @@
 							<div class="col-md-6">
 									{% if user.profile.is_in_a_team %}
 										<div class="my-3 p-3 bg-white rounded shadow">
-											<h6 class="border-bottom border-gray pb-2 mb-2 text-center">Team : {{ user.profile.team }}</h6>
+											<h6 class="border-bottom border-gray pb-2 mb-2 text-center">Team : <a href="{% url 'ht-team-view' user.profile.team.team_slug %}">{{ user.profile.team }}</a></h6>
 											<p class="mb-0">
 												Members :
 												{% for team_member in team_members %}

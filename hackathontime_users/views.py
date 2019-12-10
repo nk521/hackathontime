@@ -146,15 +146,26 @@ def hackathon_view(request, **kwargs):
 			'hackathon': hackathon_object,
 			'registered': hackathon_object.hackathon_team_going.filter(team_name=request.user.profile.team)
 		}
+		if hackathon_object.hackathon_past:
+			context['winner'] = hackathon_object.hackathon_won
+			context['runnerup1'] = hackathon_object.hackathon_runnerup_1
+			context['runnerup2'] = hackathon_object.hackathon_runnerup_2
+
 		return render(request, 'hackathontime_users/hackathon_slug.html', context)
 	else:
 		messages.warning(request, 'Hackathon doesn\'t exists.')
 		return redirect('ht-home')
 
+@login_required
 def team_view(request, **kwargs):
 	slug = kwargs['team_slug']
-	
+	team_members = Profile.objects.filter(team=request.user.profile.team)
+	hackathons = Hackathon.objects.filter(hackathon_team_going = request.user.profile.team)
+	won_hackathons = Hackathon.objects.filter(hackathon_won=request.user.profile.team)
+	# print
 	context={
-
+		'team_members': team_members,
+		'hackathons': hackathons,
+		'won_hackathons': won_hackathons
 	}
 	return render(request, 'hackathontime_users/team_slug.html', context)

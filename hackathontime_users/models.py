@@ -15,6 +15,11 @@ class Team(models.Model):
 	def __str__(self):
 		return f'{self.team_name}'
 
+	def save(self, *args, **kwargs):
+		if not self.team_slug:
+			self.team_slug = slugify(self.team_name)
+		super(Team, self).save(*args, **kwargs)
+
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	image = models.ImageField(default='default.jpg', upload_to='profile_pics')

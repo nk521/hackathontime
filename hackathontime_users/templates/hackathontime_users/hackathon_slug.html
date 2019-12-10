@@ -30,17 +30,46 @@
 					{% endif %}</div>
 				</div>
 				<div class="my-1 p-3">
-					<legend class="pb-2 border-gray border-bottom">
-						Teams registered
-					</legend>
-					{% for team in hackathon.hackathon_team_going.all %}
-						<div><a href="">{{ team.team_name }}</a></div>
-					{% endfor %}
+					{% if not hackathon.hackathon_past %}
+						<legend class="pb-2 border-gray border-bottom">
+							Teams registered
+						</legend>
+						{% for team in hackathon.hackathon_team_going.all %}
+							<div><a href="{% url 'ht-team-view' team.team_slug %}">{{ team.team_name }}</a></div>
+						{% endfor %}
+					{% else %}
+						<div class="row">
+							<div class="col">
+								<legend class="pb-2 border-gray border-bottom">
+									Teams registered
+								</legend>
+								{% for team in hackathon.hackathon_team_going.all %}
+									<div><a href="{% url 'ht-team-view' team.team_slug %}">{{ team.team_name }}</a></div>
+								{% endfor %}
+							</div>
+							<div class="col">
+								<legend class="pb-2 border-gray border-bottom">
+									Score
+								</legend>
+								{% if winner %}
+									<div>1st : <a href="{% url 'ht-team-view' winner.team_slug %}">{{ winner.team_name }}</a></div>
+								{% else %}
+									<div>To be announced.</div>
+								{% endif %}
+								{% if runnerup1 %}
+									<div>2nd : <a href="{% url 'ht-team-view' runnerup1.team_slug %}">{{ runnerup1.team_name }}</a></div>
+								{% endif %}
+								{% if runnerup2 %}
+									<div>3rd : <a href="{% url 'ht-team-view' runnerup2.team_slug %}">{{ runnerup2.team_name }}</a></div>
+								{% endif %}
+							</div>
+						</div>
+					{% endif %}
 
 				</div>
 			</div>
 			<!-- MAP -->
-			{% if hackathon.hackathon_location_url != "null" %}
+			{% if hackathon.hackathon_location_url %}
 				<div class="col-lg-4">
 					<div class="my-4 p-1 bg-white text-center rounded shadow">
 						<legend class="border-gray text-center">Map</legend>
@@ -55,30 +84,32 @@
 		<div style="margin-bottom: 5em">
 		</div>
 	</div>
-	<footer style="position: fixed; height: 5em; bottom: 0; width: 100%;" class="fixed-bottom border-gray bg-dark shadow">
-  		<div class="container my-3">
-				<div class="row">
-					<div class="col d-none d-md-block my-auto">
-			  			<div class="container">
-			    			<span class="text-white">{{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_period }} hours</span>
-			    		</div>
-			    		<div class="container">
-			    			<span class="text-white"><b>{{ hackathon.hackathon_name }}</b></span>
-			    		</div>
-			    	</div>
-			    	<div class="col text-center my-auto">
-			    		<div class="container">
-			    			{% if registered %}
-			    				<span class="text-white"><button type="submit" class="btn btn-outline-primary btn-lg" disabled>Already Registered</button></span>
-		    				{% else %}
-				    			<form method="POST">
-				    				{% csrf_token %}
-				    				<span class="text-white"><button type="submit" class="btn btn-outline-primary btn-lg ">Register</button></span>
-				    			</form>
-			    			{% endif %}
-			    		</div>
-			    	</div>
-			    </div>
-	    	</div>
-	</footer>
+	{% if hackathon.hackathon_future %}
+		<footer style="position: fixed; height: 5em; bottom: 0; width: 100%;" class="fixed-bottom border-gray bg-dark shadow">
+	  		<div class="container my-3">
+					<div class="row">
+						<div class="col d-none d-md-block my-auto">
+				  			<div class="container">
+				    			<span class="text-white">{{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_period }} hours</span>
+				    		</div>
+				    		<div class="container">
+				    			<span class="text-white"><b>{{ hackathon.hackathon_name }}</b></span>
+				    		</div>
+				    	</div>
+				    	<div class="col text-center my-auto">
+				    		<div class="container">
+				    			{% if registered %}
+				    				<span class="text-white"><button type="submit" class="btn btn-outline-primary btn-lg" disabled>Already Registered</button></span>
+			    				{% else %}
+					    			<form method="POST">
+					    				{% csrf_token %}
+					    				<span class="text-white"><button type="submit" class="btn btn-outline-primary btn-lg ">Register</button></span>
+					    			</form>
+				    			{% endif %}
+				    		</div>
+				    	</div>
+				    </div>
+		    	</div>
+		</footer>
+	{% endif %}
 {% endblock body %}

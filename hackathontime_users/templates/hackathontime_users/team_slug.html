@@ -1,0 +1,29 @@
+{% extends "hackathontime_main/base.html" %}
+{% block body %}
+	<div class="content-section">
+		<!-- hackathon won? and score till now, also team mates -->
+		<legend class="border-bottom border-gray pb-3 pt-0 text-center">
+			{{ request.user.profile.team.team_name }} 
+		</legend>
+		<div class="row border-bottom text-center">
+			<div class="col pb-3">
+				<legend class="my-0">Team Members</legend>
+				{% for member in team_members %}
+					<div><a href="{% url 'ht-profile-view' member.slug %}">{{ member.user.username }}</a></div>
+				{% endfor %}
+			</div>
+			<div class="col pb-3">
+				<legend class="text-center my-0">Hackathons</legend>
+				{% for hackathon in hackathons %}
+					<div><a href="{% url 'ht-hackathon-view' hackathon.hackathon_slug %}">{{ hackathon.hackathon_name }}</a></div>
+				{% endfor %}
+			</div>
+			<div class="col pb-3">
+				<legend class="text-center my-0">Won</legend>
+				{% for hackathon in won_hackathons %}
+					<div><a href="{% url 'ht-hackathon-view' hackathon.hackathon_slug %}">{{ hackathon.hackathon_name }}</a></div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock body %}
