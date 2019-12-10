@@ -31,6 +31,7 @@ urlpatterns = [
     path('profile/<slug:profile_slug>', users_views.profile_view, name='ht-profile-view'),
     path('team/register', users_views.register_team, name='ht-register-team'),
     path('hackathon/<slug:hackathon_slug>', users_views.hackathon_view, name='ht-hackathon-view'),
+    path('team/<slug:team_slug>', users_views.team_view, name='ht-team-view'),
     # path team view
 ] 
 

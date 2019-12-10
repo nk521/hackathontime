@@ -10,6 +10,7 @@ from django.utils.text import slugify
 class Team(models.Model):
 	team_name = models.CharField(max_length=20,unique=True)
 	team_points = models.FloatField(default=0.0)
+	team_slug = models.CharField(max_length=100, blank=True)
 
 	def __str__(self):
 		return f'{self.team_name}'

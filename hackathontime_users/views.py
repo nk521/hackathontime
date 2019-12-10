@@ -150,3 +150,11 @@ def hackathon_view(request, **kwargs):
 	else:
 		messages.warning(request, 'Hackathon doesn\'t exists.')
 		return redirect('ht-home')
+
+def team_view(request, **kwargs):
+	slug = kwargs['team_slug']
+	
+	context={
+
+	}
+	return render(request, 'hackathontime_users/team_slug.html', context)
