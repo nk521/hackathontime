@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Team, Profile
 from PIL import Image
 from hackathontime_main.models import Hackathon
+# from pagedown.widgets import Pagedown
 
 def register(request):
 	if request.user.is_authenticated:

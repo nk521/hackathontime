@@ -35,6 +35,8 @@ class Profile(models.Model):
 
 	def save(self, *args, **kwargs):
 		self.slug = slugify(self.user.username)
+		if not self.bio:
+			self.bio = "*No bio*"
 		super(Profile, self).save(*args, **kwargs)
 		
 		img = Image.open(self.image.path)

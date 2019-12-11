@@ -4,6 +4,7 @@ from .models import Profile, Team
 from django.contrib.auth.forms import UserCreationForm
 from colleges import *
 from django.db import models
+from pagedown.widgets import PagedownWidget
 
 class UserForm(UserCreationForm):
 	email = forms.EmailField(max_length=255, label="E-Mail")
@@ -26,6 +27,7 @@ class CreateTeamForm(forms.ModelForm):
 # 		fields = ['username']
 
 class ProfileUpdateForm(forms.ModelForm):
+	bio = forms.CharField(widget=PagedownWidget(), label="Bio (Pagedown/Markdown)", required=False)
 	image = forms.ImageField(required=False, widget=forms.FileInput)
 	class Meta:
 		model=Profile
