@@ -27,9 +27,8 @@
 				{% for hackathon in future_hackathons %}
 					<div class="media text-muted pt-3">
 					  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray text-truncate">
-					  	<span class="d-block text-right">{{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_period }} hours</span>
-					    <strong class="d-block text-gray-dark">{{ hackathon.hackathon_name }}</strong>
-					    {{ hackathon.hackathon_content|truncatechars:50 }}
+					    <strong class="text-gray-dark"><a href="{% url 'ht-hackathon-view' hackathon.hackathon_slug %}">{{ hackathon.hackathon_name }}</a></strong>
+					    <span class=" text-right"> - {{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_period }} hours</span>
 					  </p>
 					</div>
 				{% endfor %}
@@ -37,7 +36,7 @@
 			  <a href="#">All Ongoing hackathons</a>
 			</small>
 		</div>
-	</div>
+	</div><!-- 
 	<div class="col-md-6">
 		<div class="my-3 p-3 bg-white rounded shadow-sm">
 			<h6 class="border-bottom border-gray pb-2 mb-0 text-center">Team Ranking</h6>
@@ -51,16 +50,15 @@
 			  <a href="#">More</a>
 			</small>
 		</div>
-	</div>
+	</div> -->
 	<div class="col-md-6">
 		<div class="my-3 p-3 bg-white rounded shadow-sm">
 			<h6 class="border-bottom border-gray pb-2 mb-0 text-center">Ongoing Hackathons</h6>
 				{% for hackathon in on_going_hackathons %}
 					<div class="media text-muted pt-3">
 					  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray text-truncate">
-					  	<span class="d-block text-right">{{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_period }} hours</span>
-					    <strong class="d-block text-gray-dark">{{ hackathon.hackathon_name }}</strong>
-					    {{ hackathon.hackathon_content|truncatechars:50 }}
+					    <strong class="text-gray-dark">{{ hackathon.hackathon_name }}</strong>
+					    <span class=" text-right"> - {{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_period }} hours</span>
 					  </p>
 					</div>
 				{% endfor %}

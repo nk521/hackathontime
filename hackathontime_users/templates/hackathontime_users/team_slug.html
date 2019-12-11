@@ -5,9 +5,9 @@
 		<legend class="border-bottom border-gray pb-3 pt-0 text-center">
 			{{ request.user.profile.team.team_name }} 
 		</legend>
-		<div class="row border-bottom text-center">
+		<div class="row border-bottom">
 			<div class="col pb-3">
-				<legend class="my-0">Team Members</legend>
+				<legend class="text-center my-0">Team Members</legend>
 				{% for member in team_members %}
 					<div><a href="{% url 'ht-profile-view' member.slug %}">{{ member.user.username }}</a></div>
 				{% endfor %}
