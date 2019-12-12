@@ -47,3 +47,6 @@ def home(request):
 
 # def about(request):
 # 	return HttpResponse("<h1>about</h1>")
+
+def hackathon_past(request):
+	return render(request, 'hackathontime_main/past.html')

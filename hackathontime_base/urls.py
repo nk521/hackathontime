@@ -32,7 +32,6 @@ urlpatterns = [
     path('team/register', users_views.register_team, name='ht-register-team'),
     path('hackathon/<slug:hackathon_slug>', users_views.hackathon_view, name='ht-hackathon-view'),
     path('team/<slug:team_slug>', users_views.team_view, name='ht-team-view'),
-    # path team view
 ] 
 
 if settings.DEBUG:
