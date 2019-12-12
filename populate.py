@@ -8,8 +8,10 @@ alpha_numeric = string.ascii_lowercase + string.ascii_uppercase + string.digits
 
 for x in range(50):
     passs = ''.join(random.choices(alpha_numeric, k=3))
-    u = User.objects.create_user(username=passs + ''.join(random.choices(alpha_numeric, k=5)), first_name=''.join(random.choices(alpha_numeric, k=10)),
-                                 last_name=''.join(random.choices(alpha_numeric, k=5)), email=''.join(random.choices(alpha_numeric, k=10))+"@abcd.com", password=passs)
+    u = User.objects.create_user(username=passs + ''.join(random.choices(alpha_numeric, k=5)),
+                                 first_name=''.join(random.choices(alpha_numeric, k=10)),
+                                 last_name=''.join(random.choices(alpha_numeric, k=5)),
+                                 email=''.join(random.choices(alpha_numeric, k=10))+"@abcd.com", password=passs)
     u.profile.gender = random.choice("MFO")
     u.profile.bio = ''.join(
         [''.join(random.choices(alpha_numeric, k=20)) for _ in range(10)])
