@@ -64,19 +64,16 @@ def profile(request):
 
 @login_required
 def register_team(request):
-    if Profile.objects.get(user=request.user).is_in_a_team:
+    if request.user.profile.is_in_a_team:
         messages.warning(request, "You're already in a team.")
         return redirect('ht-profile')
-
-    # theres no need for another query ig
-    # request.user.profile.is_in_a_team should also work
-    # TODO ^
+        
     if request.method == "POST":
         team_form = CreateTeamForm(request.POST)
 
         if team_form.is_valid():
             team_instance = team_form.save()
-            profile = Profile.objects.get(user=request.user)
+            profile = request.user.profile
             profile.team = team_instance
             profile.is_in_a_team = True
             profile.save()
