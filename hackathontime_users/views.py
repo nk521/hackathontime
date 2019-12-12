@@ -10,6 +10,7 @@ from hackathontime_main.models import Hackathon
 def register(request):
     if request.user.is_authenticated:
         return redirect('ht-home')
+
     if request.method == "POST":
         user_form = UserForm(request.POST)
 
@@ -23,7 +24,12 @@ def register(request):
     else:
         user_form = UserForm()
 
-    return render(request, 'hackathontime_users/register.html', {'user_form': user_form})
+    context = {
+        'title': 'Register',
+        'user_form': user_form,
+    }
+
+    return render(request, 'hackathontime_users/register.html', context)
 
 
 @login_required
@@ -55,6 +61,7 @@ def profile(request):
         team_members = Profile.objects.filter(team=request.user.profile.team)
 
     context = {
+        'title': 'Profile',
         'profile_form': profile_form,
         'team_members': team_members,
     }
@@ -89,6 +96,7 @@ def register_team(request):
         team_form = CreateTeamForm()
 
     context = {
+        'title': 'Register Team',
         'team_form': team_form,
     }
 
@@ -107,6 +115,7 @@ def profile_view(request, **kwargs):
         team_members = Profile.objects.filter(team=profile_object.team)
 
         context = {
+            'title': f'{profile_object.user.username}\'s profile',
             'profile': profile_object,
             'team_members': [str(team_member) for team_member in team_members],
         }
@@ -134,6 +143,7 @@ def hackathon_view(request, **kwargs):
 
         hackathon_object = hackathon_object[0]
         context = {
+            'title': f'{hackathon_object.hackathon_name}',
             'hackathon': hackathon_object,
             'registered': hackathon_object.hackathon_team_going.filter(team_name=request.user.profile.team)
         }
@@ -158,6 +168,7 @@ def team_view(request, **kwargs):
         hackathon_won=request.user.profile.team)
     # print
     context = {
+        'title': 'Team',
         'team_members': team_members,
         'hackathons': hackathons,
         'won_hackathons': won_hackathons
