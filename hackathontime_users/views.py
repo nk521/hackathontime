@@ -7,7 +7,6 @@ from django.contrib.auth import authenticate, login
 from PIL import Image
 from hackathontime_main.models import Hackathon
 
-
 def register(request):
     if request.user.is_authenticated:
         return redirect('ht-home')

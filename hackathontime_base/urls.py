@@ -1,18 +1,3 @@
-"""ht_django URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 from hackathontime_users import views as users_views
@@ -29,9 +14,17 @@ urlpatterns = [
                                                 redirect_authenticated_user=True), name='ht-login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='ht-home'), name='ht-logout'),
     path('reset/', auth_views.PasswordResetView.as_view(
-        template_name='hackathontime_users/password_reset.html'), name='ht-password-reset'),
+        template_name='hackathontime_users/password_reset.html',
+        extra_context={'title': 'Reset Password'}), name='ht-password-reset'),
     path('reset/confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
-        template_name='password_reset_confirm.html'), name='ht-password-reset-confirm'),
+        template_name='hackathontime_users/password_reset_confirm.html',
+        extra_context={'title': 'Reset Password'}), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetDoneView.as_view(
+        template_name='hackathontime_users/password_reset_done.html',
+        extra_context={'title': 'Reset Password'}), name='password_reset_done'),
+    path('reset/complete/', auth_views.PasswordResetCompleteView.as_view(
+        template_name='hackathontime_users/password_reset_complete.html',
+        extra_context={'title': 'Reset Password'}), name='password_reset_complete'),
     path('profile/', users_views.profile, name='ht-profile'),
     path('profile/<slug:profile_slug>',
          users_views.profile_view, name='ht-profile-view'),
