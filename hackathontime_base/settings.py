@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJ_DEBUG')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'www.hackathonti.me']
+ALLOWED_HOSTS = ['127.0.0.1', 'www.hackathonti.me', 'hackathonti-me.herokuapp.com']
 
 
 # Application definition
