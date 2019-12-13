@@ -9,6 +9,7 @@ from django.utils.text import slugify
 import string
 import random
 
+
 class Team(models.Model):
     team_name = models.CharField(max_length=20, unique=True)
     team_points = models.FloatField(default=0.0)
@@ -24,9 +25,10 @@ class Team(models.Model):
 
         if not self.team_code:
             chars = string.ascii_lowercase+string.ascii_uppercase+string.digits
-            self.team_code = ''.join(random.choices(chars,k=20))
+            self.team_code = ''.join(random.choices(chars, k=20))
 
         super(Team, self).save(*args, **kwargs)
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
