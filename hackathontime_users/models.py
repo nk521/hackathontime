@@ -6,12 +6,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
 from django.utils.text import slugify
-
+import string
+import random
 
 class Team(models.Model):
     team_name = models.CharField(max_length=20, unique=True)
     team_points = models.FloatField(default=0.0)
     team_slug = models.CharField(max_length=100, blank=True)
+    team_code = models.CharField(max_length=20, blank=True)
 
     def __str__(self):
         return f'{self.team_name}'
@@ -19,8 +21,12 @@ class Team(models.Model):
     def save(self, *args, **kwargs):
         if not self.team_slug:
             self.team_slug = slugify(self.team_name)
-        super(Team, self).save(*args, **kwargs)
 
+        if not self.team_code:
+            chars = string.ascii_lowercase+string.ascii_uppercase+string.digits
+            self.team_code = ''.join(random.choices(chars,k=20))
+
+        super(Team, self).save(*args, **kwargs)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

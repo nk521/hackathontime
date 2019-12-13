@@ -25,13 +25,15 @@ urlpatterns = [
     path('', include('hackathontime_main.urls')),
     path('admin/', admin.site.urls),
     path('register/', users_views.register, name='ht-register'),
-    path('login/', auth_views.LoginView.as_view(template_name='hackathontime_users/login.html'), name='ht-login'),
+    path('login/', auth_views.LoginView.as_view(template_name='hackathontime_users/login.html', redirect_authenticated_user=True), name='ht-login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='ht-home'), name='ht-logout'),
     path('profile/', users_views.profile, name='ht-profile'),
     path('profile/<slug:profile_slug>', users_views.profile_view, name='ht-profile-view'),
     path('team/register', users_views.register_team, name='ht-register-team'),
     path('hackathon/<slug:hackathon_slug>', users_views.hackathon_view, name='ht-hackathon-view'),
+    path('team/', users_views.team, name='ht-team'),
     path('team/<slug:team_slug>', users_views.team_view, name='ht-team-view'),
+    path('team/join/<str:code>', users_views.team_join, name='ht-team-join'),
 ] 
 
 if settings.DEBUG:

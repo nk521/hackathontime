@@ -3,9 +3,9 @@ from django.contrib import messages
 from .forms import UserForm, ProfileUpdateForm, CreateTeamForm
 from django.contrib.auth.decorators import login_required
 from .models import Team, Profile
+from django.contrib.auth import authenticate, login
 from PIL import Image
 from hackathontime_main.models import Hackathon
-
 
 def register(request):
     if request.user.is_authenticated:
@@ -17,8 +17,10 @@ def register(request):
         if user_form.is_valid():
             user_form.save()
             username = user_form.cleaned_data.get('username')
-            messages.success(request, f"Account for username \"{username}\" has been created. Login to your new account.")
-            return redirect('ht-login')
+            messages.success(request, f"Account for username \"{username}\" has been created.")
+            new_user = authenticate(username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password1'],)
+            login(request, new_user)
+            return redirect('ht-home')
         else:
             messages.warning(request, 'Please correct the errors below.')
     else:
@@ -90,7 +92,7 @@ def register_team(request):
             messages.success(request, f"Team '{team_name}' successfully created!")
             return redirect('ht-profile')
         else:
-            messages.warning(request, 'Please correct the errors below.')
+            messages.warning(request, 'This name is already taken.')
             return redirect('ht-profile')
     else:
         team_form = CreateTeamForm()
@@ -101,7 +103,6 @@ def register_team(request):
     }
 
     return render(request, 'hackathontime_users/register_team.html', context)
-
 
 @login_required
 def profile_view(request, **kwargs):
@@ -124,7 +125,6 @@ def profile_view(request, **kwargs):
     else:
         messages.warning(request, 'User doesn\'t exists.')
         return redirect('ht-home')
-
 
 def hackathon_view(request, **kwargs):
     slug = kwargs['hackathon_slug']
@@ -157,20 +157,75 @@ def hackathon_view(request, **kwargs):
         messages.warning(request, 'Hackathon doesn\'t exists.')
         return redirect('ht-home')
 
+@login_required
+def team(request):
+    profile = request.user.profile
+    if not profile.is_in_a_team:
+        messages.warning(request, 'You\'re not in team. Either create one or join one.')
+        return redirect('ht-register-team')
+
+    team_members = Profile.objects.filter(team=profile.team)
+    hackathons = Hackathon.objects.filter(
+            hackathon_team_going=profile.team)
+    won_hackathons = Hackathon.objects.filter(
+            hackathon_won=profile.team)
+
+    context = {
+            'title': 'Your Team',
+            'team_members': team_members,
+            'hackathons': hackathons,
+            'won_hackathons': won_hackathons
+        }
+
+    return render(request, 'hackathontime_users/team.html', context)
 
 @login_required
 def team_view(request, **kwargs):
     slug = kwargs['team_slug']
-    team_members = Profile.objects.filter(team=request.user.profile.team)
-    hackathons = Hackathon.objects.filter(
-        hackathon_team_going=request.user.profile.team)
-    won_hackathons = Hackathon.objects.filter(
-        hackathon_won=request.user.profile.team)
-    # print
-    context = {
-        'title': 'Team',
-        'team_members': team_members,
-        'hackathons': hackathons,
-        'won_hackathons': won_hackathons
-    }
-    return render(request, 'hackathontime_users/team_slug.html', context)
+
+    if request.user.profile.is_in_a_team: 
+        if request.user.profile.team.team_slug == slug:
+            return redirect('ht-team')
+
+    team_object = Team.objects.filter(team_slug=slug)
+    if team_object:
+        team_object = team_object[0]
+        team_members = Profile.objects.filter(team=team_object)
+        hackathons = Hackathon.objects.filter(
+            hackathon_team_going = team_object)
+        won_hackathons = Hackathon.objects.filter(
+            hackathon_won=team_object)
+        # print
+        context = {
+            'title': f'{team_object.team_name} Team',
+            'team': team_object,
+            'team_members': team_members,
+            'hackathons': hackathons,
+            'won_hackathons': won_hackathons
+        }
+        return render(request, 'hackathontime_users/team_slug.html', context)
+
+    else:
+        messages.warning(request, 'Team doesn\'t exists.')
+        return redirect('ht-home')
+
+@login_required
+def team_join(request, **kwargs):
+    code = kwargs['code']
+    team_object = Team.objects.filter(team_code=code)
+    if not team_object:
+        messages.warning(request, 'Code is invalid.')
+        return redirect('ht-home')
+
+    team_object = team_object[0]
+    profile = request.user.profile
+    if profile.is_in_a_team:
+        messages.warning(request, 'You\'re already in a team.')
+        return redirect('ht-home')
+
+    profile.team = team_object
+    profile.is_in_a_team = True
+    profile.save()
+
+    messages.success(request, f'You successfully joined \'{team_object.team_name}\' team.')
+    return redirect('ht-profile')
