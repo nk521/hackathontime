@@ -28,6 +28,10 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='hackathontime_users/login.html',
                                                 redirect_authenticated_user=True), name='ht-login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='ht-home'), name='ht-logout'),
+    path('reset/', auth_views.PasswordResetView.as_view(
+        template_name='hackathontime_users/password_reset.html'), name='ht-password-reset'),
+    path('reset/confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(
+        template_name='password_reset_confirm.html'), name='ht-password-reset-confirm'),
     path('profile/', users_views.profile, name='ht-profile'),
     path('profile/<slug:profile_slug>',
          users_views.profile_view, name='ht-profile-view'),
