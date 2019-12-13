@@ -22,6 +22,9 @@ def register(request):
             new_user = authenticate(
                 username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password1'],)
             login(request, new_user)
+            gender = user_form.cleaned_data.get('gender')
+            new_user.profile.gender = gender
+            new_user.profile.save()
             return redirect('ht-home')
         else:
             messages.warning(request, 'Please correct the errors below.')

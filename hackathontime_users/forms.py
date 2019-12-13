@@ -11,12 +11,21 @@ class UserForm(UserCreationForm):
     email = forms.EmailField(max_length=255, label="E-Mail")
     first_name = forms.CharField(max_length=255, label="First Name")
     last_name = forms.CharField(max_length=255, label="Last Name")
+    gender = forms.ChoiceField(choices=[('M', 'Male'), ('F', 'Female'), (
+        "O", "Others"), ("X", "Prefer not to say")])
 
     class Meta:
         model = User
         # fields = '__all__'
-        fields = ('first_name', 'last_name', 'username', 'email')
+        fields = ('first_name', 'last_name', 'gender', 'username', 'email')
 
+class ProfileForm(forms.ModelForm):
+    gender = forms.ChoiceField(choices=[('F', 'Female'), ('M', 'Male'), (
+        "O", "Others"), ("X", "Prefer not to say")])
+
+    class Meta:
+        model = Profile
+        fields = ['gender']
 
 class CreateTeamForm(forms.ModelForm):
     team_name = forms.CharField(max_length=20, label="Team Name")
