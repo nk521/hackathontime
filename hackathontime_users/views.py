@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserForm, ProfileUpdateForm, CreateTeamForm
+from .forms import UserForm, ProfileUpdateForm, CreateTeamForm #, CreatePostForm
 from django.contrib.auth.decorators import login_required
-from .models import Team, Profile
+from .models import Team, Profile #, Post
 from django.contrib.auth import authenticate, login
 from PIL import Image
 from hackathontime_main.models import Hackathon
@@ -171,6 +171,21 @@ def team(request):
         messages.warning(
             request, 'You\'re not in team. Either create one or join one.')
         return redirect('ht-register-team')
+    
+    # if request.method == "POST":
+    #     post_form = CreatePostForm(request.POST)
+
+    #     if post_form.is_valid():
+    #         post_instance = post_form.save()
+    #         post_instance.author = profile.team
+    #         post_instance.save()
+
+    #     else:
+    #         messages.warning(request, 'Please correct the errors below.')
+    #         return redirect('ht-team')
+
+    # else:
+    #     post_form = CreatePostForm()
 
     team_members = Profile.objects.filter(team=profile.team)
     hackathons = Hackathon.objects.filter(
@@ -182,7 +197,9 @@ def team(request):
         'title': 'Your Team',
         'team_members': team_members,
         'hackathons': hackathons,
-        'won_hackathons': won_hackathons
+        'won_hackathons': won_hackathons,
+        # 'form': post_form,
+        # 'posts': Post.objects.filter(author = profile.team),
     }
 
     return render(request, 'hackathontime_users/team.html', context)
@@ -210,7 +227,8 @@ def team_view(request, **kwargs):
             'team': team_object,
             'team_members': team_members,
             'hackathons': hackathons,
-            'won_hackathons': won_hackathons
+            'won_hackathons': won_hackathons,
+            # 'posts': Post.objects.filter(author__team_slug = slug),
         }
         return render(request, 'hackathontime_users/team_slug.html', context)
 

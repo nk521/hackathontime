@@ -1,4 +1,6 @@
 {% extends "hackathontime_main/base.html" %}
+{% load crispy_forms_tags %}
+{% load markdown_deux_tags %}
 {% block body %}
 	<!-- hackathon won? and score till now, also team mates -->
 	<legend class="border-bottom border-gray pb-3 pt-0 text-center">
@@ -9,7 +11,6 @@
 			<div class="list-group" id="list-tab" role="tablist">
 				<a class="list-group-item list-group-item-action active" id="list-overview-list" data-toggle="list" href="#list-overview" role="tab" aria-controls="overview">Overview</a>
 				<a class="list-group-item list-group-item-action" id="list-members-list" data-toggle="list" href="#list-members" role="tab" aria-controls="members">Members</a>
-				<a class="list-group-item list-group-item-action" id="list-posts-list" data-toggle="list" href="#list-posts" role="tab" aria-controls="posts">Posts</a>
 				<a class="list-group-item list-group-item-action" id="list-invite-list" data-toggle="list" href="#list-invite" role="tab" aria-controls="invite">Invite</a>
 			</div>
 		</div>
@@ -30,9 +31,6 @@
 							</div>
 						{% endfor %}
 					</div>
-				</div>
-				<div class="tab-pane fade" id="list-posts" role="tabpanel" aria-labelledby="list-posts-list">
-					{% lorem %}
 				</div>
 				<div class="tab-pane fade" id="list-invite" role="tabpanel" aria-labelledby="list-invite-list">
 					Share this link : <a href="{% url 'ht-team-join' request.user.profile.team.team_code %}">{% url 'ht-team-join' request.user.profile.team.team_code %}</a>
