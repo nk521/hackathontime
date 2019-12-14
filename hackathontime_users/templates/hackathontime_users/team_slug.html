@@ -1,8 +1,9 @@
 {% extends "hackathontime_main/base.html" %}
+{% load markdown_deux_tags %}
 {% block body %}
 	<!-- hackathon won? and score till now, also team mates -->
 	<legend class="border-bottom border-gray pb-3 pt-0 text-center">
-		{{ request.user.profile.team.team_name }} 
+		{{ team_name }} 
 	</legend>
 	<div class="row">
 		<div class="col-sm-3 p-3 mx-3">
@@ -15,7 +16,10 @@
 		<div class="col-sm-8 p-3">
 			<div class="tab-content" id="nav-tabContent">
 				<div class="tab-pane fade show active" id="list-overview" role="tabpanel" aria-labelledby="list-overview-list">
-					{% lorem %}
+					{% if not team_overview %}
+						<div>There's no overview for this team.</div>
+					{% endif %}
+					<div>{{ team_overview|markdown }}</div>
 				</div>
 				<div class="tab-pane fade" id="list-members" role="tabpanel" aria-labelledby="list-members-list">
 					<div class="row">

@@ -18,7 +18,12 @@
 		<div class="col-sm-8 p-3">
 			<div class="tab-content" id="nav-tabContent">
 				<div class="tab-pane fade show active" id="list-overview" role="tabpanel" aria-labelledby="list-overview-list">
-					{% lorem %}
+					<form method="POST">
+							{% csrf_token %}
+							{{ form|crispy }}
+							<button class="btn btn-outline-info" type="submit">Sign Up</button>
+					</form>
+					<div class="my-3">{{ request.user.profile.team.team_overview|markdown }}</div>
 				</div>
 				<div class="tab-pane fade" id="list-members" role="tabpanel" aria-labelledby="list-members-list">
 					<div class="row">
@@ -33,7 +38,7 @@
 					</div>
 				</div>
 				<div class="tab-pane fade" id="list-invite" role="tabpanel" aria-labelledby="list-invite-list">
-					Share this link : <a href="{% url 'ht-team-join' request.user.profile.team.team_code %}">{% url 'ht-team-join' request.user.profile.team.team_code %}</a>
+					Share this link : <a href="{% url 'ht-team-join' request.user.profile.team.team_code %}">{{ request.META.HTTP_HOST }}{% url 'ht-team-join' request.user.profile.team.team_code %}</a>
 				</div>
 			</div>
 		</div>

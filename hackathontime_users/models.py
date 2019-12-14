@@ -13,6 +13,7 @@ import random
 class Team(models.Model):
     team_name = models.CharField(max_length=20, unique=True)
     team_points = models.FloatField(default=0.0)
+    team_overview = models.TextField(blank =True)
     team_slug = models.CharField(max_length=100, blank=True)
     team_code = models.CharField(max_length=20, blank=True)
 
@@ -22,6 +23,9 @@ class Team(models.Model):
     def save(self, *args, **kwargs):
         if not self.team_slug:
             self.team_slug = slugify(self.team_name)
+
+        if not self.team_overview:
+            self.team_overview = " "
 
         if not self.team_code:
             chars = string.ascii_lowercase+string.ascii_uppercase+string.digits

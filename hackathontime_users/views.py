@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserForm, ProfileUpdateForm, CreateTeamForm #, CreatePostForm
+from .forms import UserForm, ProfileUpdateForm, CreateTeamForm, TeamOverviewForm #, CreatePostForm
 from django.contrib.auth.decorators import login_required
 from .models import Team, Profile #, Post
 from django.contrib.auth import authenticate, login
@@ -171,6 +171,21 @@ def team(request):
         messages.warning(
             request, 'You\'re not in team. Either create one or join one.')
         return redirect('ht-register-team')
+
+    if request.method == "POST":
+        team_overview_form = TeamOverviewForm(request.POST)
+
+        if team_overview_form.is_valid():
+            team_overview = team_overview_form.cleaned_data.get('team_overview')
+            profile.team.team_overview = team_overview
+            profile.team.save()
+
+        else:
+            messages.warning(request, 'Please correct the errors below.')
+            return redirect('ht-team')
+
+    else:
+        team_overview_form = TeamOverviewForm(instance=request.user.profile.team)
     
     # if request.method == "POST":
     #     post_form = CreatePostForm(request.POST)
@@ -198,6 +213,7 @@ def team(request):
         'team_members': team_members,
         'hackathons': hackathons,
         'won_hackathons': won_hackathons,
+        'form': team_overview_form,
         # 'form': post_form,
         # 'posts': Post.objects.filter(author = profile.team),
     }
@@ -221,10 +237,11 @@ def team_view(request, **kwargs):
             hackathon_team_going=team_object)
         won_hackathons = Hackathon.objects.filter(
             hackathon_won=team_object)
-        # print
+
         context = {
             'title': f'{team_object.team_name} Team',
-            'team': team_object,
+            'team_name': team_object.team_name,
+            'team_overview': team_object.team_overview,
             'team_members': team_members,
             'hackathons': hackathons,
             'won_hackathons': won_hackathons,

@@ -49,6 +49,14 @@ class ProfileUpdateForm(forms.ModelForm):
         model = Profile
         fields = ['bio', 'image']
 
+
+class TeamOverviewForm(forms.ModelForm):
+    team_overview = forms.CharField(widget=PagedownWidget(), label="Edit your team overview (Pagedown/Markdown)")
+
+    class Meta:
+        model = Team
+        fields = ['team_overview']
+
 # class CreatePostForm(forms.ModelForm):
 #     title = forms.CharField(max_length=200, label="Title")
 #     content = forms.CharField(widget=PagedownWidget(), label="Content (Pagedown/Markdown)")
