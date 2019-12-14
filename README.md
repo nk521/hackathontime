@@ -1,10 +1,10 @@
 <h1 align="center">Hackathonti.Me</h1>
+
 <h3 align="center">Get.Set.[ Host || Participate].Flaunt!</h3>
+
 <p align="center"> A <code>website</code> where you can host your hackathon or register for one! Participate to find your
   hackathon rankings. Earn loyalty badges. Aaaaaand help us improve!
 </p>
-
-<br />
 
 <p align="center">
   <!-- NPM version -->
@@ -34,7 +34,7 @@
     Website
   </a>
   <span> | </span>
-  <a href="https://this-will-be-a-link.com">
+  <a href="https://github.com/ruchikabgosain/hackathonti.me/blob/master/README.md#contribution-guide-i-want-to-get-started">
     Contributing
   </a>
   <span> | </span>
@@ -65,20 +65,21 @@ This platform caters to hackathon hosts and participants alike.
 hmmm💭
 
 ## `Work already done` We did this much! 
-gotcha nerdssss
-- basic UI skeleton pages
-- login/register
-- team creation
-- date/time logic for hackathons
-- winner/runnerup logic
-- points logic (ye manual hi hoga.. CTFtime bhi ese hi krta)
+- Skeleton pages for User Interface (UI) with all the required variables and properties.
+- Pages for Login/Register into Hackathonti.Me.
+- Logic for Creation of teams for hackathons by participants.
+- Logic for Date/Time for hackathons to decide the ongoing, future and past events and move them to archive accordingly.
+- Logic to declare Winner and Runner-Ups.
+- Logic to decide points for teams and hackathons. This is implemented manually.
+
+gotcha nerdss🧠
 
 ## `Work in Progress` Still brainstorming these ones!
-under construction kidddoo
-- public voting thingy
-- join team logic (I was thinking ki team banane pe UUID dedete hai user ko jisse join kr ske baaki bande)
-- team slug page pe abhi bas team members, hackathons went and hackathons won hai.. usko chota sa ek kone m 
-rkh ke us page ko team blog banana hai.. taaki team explain kr pae ki unhone is hackathon m kya banaya and all
+- Logic for Public Voting for hackathons.
+- Logic to join teams. After a team is created, a UUID could be generated for the participants which will also allow others to join in.
+- Is Team Blog is a good idea? Where teams can write about their projects to maintain a project archive. The information for the team like [ team members, hackathons went and hackathons attending ] could be more concisely arranged on the page.
+
+under construction kiddo🚧
 
 ## `Screenshots` How do we look like?
 giphy cat save us
@@ -108,13 +109,8 @@ git-commit-ments oooof
 ### Let us know how we did.
 Drop in a mail at 📩 admin@something-something.com with your suggestions. 
 
-Or simply report a bug. Find guides and friendly templates from Github here: 
+Or simply report a bug 🐞. Find guides and friendly templates from Github here: 
 - [creating-an-issue](https://help.github.com/en/github/managing-your-work-on-github/creating-an-issue)
 - [incorporating-feedback-in-your-pr](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/incorporating-feedback-in-your-pull-request#opening-an-issue-for-an-out-of-scope-suggestion)
 
-
-
-#### Watch. Star. Fork.
-
-
-
+#### Watch 👀. Star ⭐. Fork 🍴.
