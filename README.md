@@ -1,52 +1,57 @@
 <h1 align="center">Hackathonti.Me</h1>
+<h3 align="center">Get.Set.[ Host || Participate].Flaunt!</h3>
+<p align="center"> A <code>website</code> where you can host your hackathon or register for one! Participate to find your
+  hackathon rankings. Earn loyalty badges. Aaaaaand help us improve!
+</p>
 
-<div align="center">
-  <strong> Get.Set.[ Host || Participate].Flaunt! </strong>
-</div>
-
-<div align="center"> A <code>website</code> where you can host your hackathon or register for one. Participate to find your hackathon ranking. Earn loyalty badges. Aaaaaand help us improve!
-</div>
 <br />
-<div align="center">
 
+<p align="center">
   <!-- NPM version -->
-    <img src="https://img.shields.io/npm/v/choo.svg?style=flat-square"
-      alt="NPM version" />
-      
+  <img src="https://img.shields.io/npm/v/npm?style=flat-square"
+       alt="NPM version" />
   <!-- issues, PR open -->
+  <img src="https://img.shields.io/github/issues/nk521/hackathonti.me?style=flat-square&color=brightgreen&logo=github"
+       alt="Github issues" />
   <!--build status -->
-  <!--code coverage -->
+  <a href="https://hackathonti-me.herokuapp.com/">
+    <img src="https://img.shields.io/badge/Heroku-test%20build-red?style=flat-square&logo=heroku"
+         alt="Test build" />
+  </a>
+  <!--code coverage/ size -->
+  <img src="https://img.shields.io/github/languages/code-size/nk521/hackathonti.me?style=flat-square&color=orange"
+       alt="Code size" />
   <!--social links -->
   <!--platform and version umber for dependencies -->
   <!--version number of website -->
-  
- </div>
+  <!--license -->
+  <img src="https://img.shields.io/github/license/nk521/hackathonti.me?style=flat-square&color=blueviolet"
+       alt="License" />
+</p> 
 
-<div align="center">
-  <h3>
-    <a href="https://this-will-be-a-link.com">
-      Website
-    </a>
-    <span> | </span>
-    <a href="https://this-will-be-a-link.com">
-      Contributing
-    </a>
-    <span> | </span>
-    <a href="https://this-will-be-a-link.com">
-      Chat
-    </a>
-    <span> | </span>
-    <a href="https://this-will-be-a-link.com">
-      Code of Conduct
-    </a>
-  </h3>
-</div>
-
-<div align="center">
-  <sub>Built with ❤︎ by
-  <a href="https://github.com/nk521">Nikhil Kumar</a> and others. Supported by You. 
+<h3 align="center">
+  <a href="https://hackathonti-me.herokuapp.com/">
+    Website
   </a>
-</div>
+  <span> | </span>
+  <a href="https://this-will-be-a-link.com">
+    Contributing
+  </a>
+  <span> | </span>
+  <a href="https://this-will-be-a-link.com">
+    Chat
+  </a>
+  <span> | </span>
+  <a href="https://this-will-be-a-link.com">
+    Code of Conduct
+  </a>
+</h3>
+
+<p align="center">
+  <sub>Built with ❤︎ by
+    <a href="https://github.com/nk521">Nikhil Kumar</a> and others. Supported by You. 
+    </a>
+</p>
 
 ## `Idea` What are we thinking?
 This platform caters to hackathon hosts and participants alike. 
