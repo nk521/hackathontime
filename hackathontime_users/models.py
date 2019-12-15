@@ -10,6 +10,8 @@ from django.utils.text import slugify
 import string
 import random
 
+User._meta.get_field('email')._unique = True
+
 class Team(models.Model):
     team_name = models.CharField(max_length=20, unique=True)
     team_points = models.FloatField(default=0.0)
