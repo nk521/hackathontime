@@ -1,12 +1,20 @@
 from django.shortcuts import render, redirect
-from django.contrib import messages
-from .forms import UserForm, ProfileUpdateForm, CreateTeamForm, TeamOverviewForm #, CreatePostForm
+from django.contrib import messages # , CreatePostForm
+from .forms import UserForm, ProfileUpdateForm, CreateTeamForm, TeamOverviewForm
 from django.contrib.auth.decorators import login_required
-from .models import Team, Profile #, Post
+from .models import Team, Profile  # , Post
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.template.loader import render_to_string
+from .tokens import account_activation_token
+from django.core.mail import EmailMessage
 from PIL import Image
 from hackathontime_main.models import Hackathon
 
+# /register
 def register(request):
     if request.user.is_authenticated:
         return redirect('ht-home')
@@ -15,15 +23,35 @@ def register(request):
         user_form = UserForm(request.POST)
 
         if user_form.is_valid():
-            user_form.save()
+            #save form
+            user = user_form.save()
+            user.profile.is_active = False
+            gender = user_form.cleaned_data.get('gender')
+            user.profile.gender = gender
+            user.profile.save()
+            # account activation mail
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your HackathonTime account.'
+            message = render_to_string('hackathontime_users/activate_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': account_activation_token.make_token(user),
+            })
+            to_email = user_form.cleaned_data.get('email')
+            email = EmailMessage(
+                mail_subject, message, to=[to_email]
+            )
+            email.send()
+            # login to new account. and throw some messages.
             username = user_form.cleaned_data.get('username')
             messages.success(request, f"Account for username \"{username}\" has been created.")
+            messages.warning(request, "Please confirm your E-mail address.")
             new_user = authenticate(
-                username=user_form.cleaned_data['username'], password=user_form.cleaned_data['password1'],)
+                username=user_form.cleaned_data['username'],
+                password=user_form.cleaned_data['password1'],
+            )
             login(request, new_user)
-            gender = user_form.cleaned_data.get('gender')
-            new_user.profile.gender = gender
-            new_user.profile.save()
             return redirect('ht-home')
         else:
             messages.warning(request, 'Please correct the errors below.')
@@ -37,7 +65,25 @@ def register(request):
 
     return render(request, 'hackathontime_users/register.html', context)
 
+# /register/activate
+def activate(request, uidb64, token):
+    # check for uid
+    try:
+        uid = force_text(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        # grant access to user
+        user.profile.is_active = True
+        user.profile.save()
+        messages.success(request, 'Thank you for your email confirmation.')
+        return redirect('ht-profile')
+    else:
+        messages.warning(request, 'Activation link is invalid.')
+        return redirect('ht-profile')
 
+# /profile
 @login_required
 def profile(request):
     if request.method == "POST":
@@ -77,6 +123,10 @@ def profile(request):
 
 @login_required
 def register_team(request):
+    if not request.user.profile.is_active:
+        messages.warning(request, "Please confirm your E-mail address.")
+        return redirect('ht-profile')
+
     if request.user.profile.is_in_a_team:
         messages.warning(request, "You're already in a team.")
         return redirect('ht-profile')
@@ -132,11 +182,18 @@ def profile_view(request, **kwargs):
         return redirect('ht-home')
 
 
+@login_required
 def hackathon_view(request, **kwargs):
     slug = kwargs['hackathon_slug']
     hackathon_object = Hackathon.objects.filter(hackathon_slug=slug)
     if hackathon_object:
         if request.method == "POST":
+
+            if not request.user.profile.is_active:
+                messages.warning(
+                    request, "Please confirm your E-mail address.")
+                return redirect('ht-profile')
+
             if not request.user.profile.is_in_a_team:
                 messages.warning(
                     request, "You're not in a team. Either make one team or join one.")
@@ -176,7 +233,8 @@ def team(request):
         team_overview_form = TeamOverviewForm(request.POST)
 
         if team_overview_form.is_valid():
-            team_overview = team_overview_form.cleaned_data.get('team_overview')
+            team_overview = team_overview_form.cleaned_data.get(
+                'team_overview')
             profile.team.team_overview = team_overview
             profile.team.save()
 
@@ -185,8 +243,10 @@ def team(request):
             return redirect('ht-team')
 
     else:
-        team_overview_form = TeamOverviewForm(instance=request.user.profile.team)
-    
+        team_overview_form = TeamOverviewForm(
+            instance=request.user.profile.team)
+
+    # this code is for team blog.
     # if request.method == "POST":
     #     post_form = CreatePostForm(request.POST)
 
@@ -256,6 +316,10 @@ def team_view(request, **kwargs):
 
 @login_required
 def team_join(request, **kwargs):
+    if not request.user.profile.is_active:
+        messages.warning(request, "Please confirm your E-mail address.")
+        return redirect('ht-profile')
+
     code = kwargs['code']
     team_object = Team.objects.filter(team_code=code)
     if not team_object:

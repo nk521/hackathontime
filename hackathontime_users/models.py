@@ -40,12 +40,13 @@ class Profile(models.Model):
     gender = models.CharField(max_length=1, choices=[('F', 'Female'), ('M', 'Male'), (
         "O", "Others"), ("X", "Prefer not to say")], blank=True, null=True)
     college = models.CharField(
-        max_length=255, choices=colleges_list, blank=True, null=True)  # 3739 is choose college
+        max_length=255, choices=colleges_list, blank=True, null=True)
     team = models.ForeignKey(
         Team, on_delete=models.SET_NULL, blank=True, null=True)
     is_in_a_team = models.BooleanField(default=False)
     bio = models.TextField(max_length=500, null=True, blank=True)
     slug = models.CharField(max_length=255, blank=True, null=True)
+    is_active = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user.username}'

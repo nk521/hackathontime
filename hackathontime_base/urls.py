@@ -9,6 +9,7 @@ urlpatterns = [
     path('', include('hackathontime_main.urls')),
     path('admin/', admin.site.urls),
     path('register/', users_views.register, name='ht-register'),
+    path('register/activate/<uidb64>/<token>/', users_views.activate, name='ht-activate'),
     path('login/', auth_views.LoginView.as_view(template_name='hackathontime_users/login.html',
                                                 redirect_authenticated_user=True), name='ht-login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='ht-home'), name='ht-logout'),

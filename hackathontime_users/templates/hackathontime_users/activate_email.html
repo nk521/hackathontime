@@ -1,0 +1,7 @@
+{% autoescape off %}
+Hello {{ user.username }},
+Please click on the link to confirm your registration,
+http://{{ domain }}{% url 'ht-activate' uidb64=uid token=token %}
+
+The HackathonTime Team
+{% endautoescape %}
