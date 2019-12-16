@@ -56,5 +56,20 @@ def home(request):
 def hackathon_past(request):
     context = {
         'title': 'Past Hackathons',
+        'hackathons': Hackathon.objects.filter(hackathon_past=True).order_by('hackathon_date'),
     }
-    return render(request, 'hackathontime_main/past.html', context)
+    return render(request, 'hackathontime_main/hackathon_view_all.html', context)
+
+def hackathon_ongoing(request):
+    context = {
+        'title': 'Ongoing Hackathons',
+        'hackathons': Hackathon.objects.filter(hackathon_ongoing=True).order_by('hackathon_name'),
+    }
+    return render(request, 'hackathontime_main/hackathon_view_all.html', context)
+
+def hackathon_future(request):
+    context = {
+        'title': 'Upcoming Hackathons',
+        'hackathons': Hackathon.objects.filter(hackathon_future=True).order_by('hackathon_date'),
+    }
+    return render(request, 'hackathontime_main/hackathon_view_all.html', context)

@@ -3,15 +3,15 @@
 {% block nav %}
 <div class="nav-scroller bg-white shadow-sm">
   <nav class="nav nav-underline">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{% url 'ht-view-ongoing' %}">
       Ongoing
       <span class="badge badge-pill bg-secondary text-white align-text-bottom">{{ on_going_count }}</span>
     </a>
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{% url 'ht-view-upcoming' %}">
       Upcoming
       <span class="badge badge-pill bg-secondary text-white align-text-bottom">{{ future_count }}</span>
     </a>
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{% url 'ht-view-past' %}">
       Past
     </a>
   </nav>
@@ -28,12 +28,12 @@
 					<div class="media text-muted pt-3">
 					  <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray text-truncate">
 					    <strong class="text-gray-dark"><a href="{% url 'ht-hackathon-view' hackathon.hackathon_slug %}">{{ hackathon.hackathon_name }}</a></strong>
-					    <span class=" text-right"> - {{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_period }} hours</span>
+					    <span class=" text-right"> - {{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_date|time:"H:i" }} | {{ hackathon.hackathon_period }} hours</span>
 					  </p>
 					</div>
 				{% endfor %}
 			<small class="d-block text-right mt-3">
-			  <a href="#">All Ongoing hackathons</a>
+			  <a href="{% url 'ht-view-upcoming' %}">All Upcoming hackathons</a>
 			</small>
 		</div>
 	</div><!-- 
@@ -63,7 +63,7 @@
 					</div>
 				{% endfor %}
 			<small class="d-block text-right mt-3">
-			  <a href="#">All upcoming hackathons</a>
+			  <a href="{% url 'ht-view-ongoing' %}">All ongoing hackathons</a>
 			</small>
 		</div>
 	</div>

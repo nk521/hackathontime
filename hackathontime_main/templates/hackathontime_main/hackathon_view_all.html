@@ -1,0 +1,20 @@
+{% extends "hackathontime_main/base.html" %}
+{% load markdown_deux_tags %}
+
+{% block body %}
+	<legend class="border-bottom border-gray pb-3 pt-0 text-center">{{ title }}</legend>
+	<div class='card-deck mx-auto'>
+		{% for hackathon in hackathons %}
+			<div class="card mt-3" style="width: 20rem; min-width: 20rem; max-width: 20rem;">
+			  <div class="card-body">
+			    <h5 class="card-title mb-0">{{ hackathon.hackathon_name }}</h5>
+			    <small class="card-subtitle text-muted">{{ hackathon.hackathon_date|date:"M dS' Y" }} | {{ hackathon.hackathon_date|time:"H:i" }} | {{ hackathon.hackathon_period }} hours</small>
+			    <p class="card-text my-0 mt-2">{{ hackathon.hackathon_content|truncatechars:50|markdown }}</p>
+		  	  </div>
+		      <div class="card-footer">
+		    	<small class="text-muted"><a href="{% url 'ht-hackathon-view' hackathon.hackathon_slug %}" class="card-link">Visit Page</a></small>
+			  </div>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock body %}

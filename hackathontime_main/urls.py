@@ -20,4 +20,6 @@ from . import views
 urlpatterns = [
     path('', views.home, name='ht-home'),
     path('past/', views.hackathon_past, name='ht-view-past'),
+    path('upcoming/', views.hackathon_future, name='ht-view-upcoming'),
+    path('ongoing/', views.hackathon_ongoing, name='ht-view-ongoing')
 ]

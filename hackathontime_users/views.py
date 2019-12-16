@@ -341,6 +341,7 @@ def team_join(request, **kwargs):
 
 def team_view_all(request):
     context = {
+        'title': 'All Teams',
         'teams': Team.objects.all().order_by('team_name') # alphabetically ascending
     }
     return render(request, 'hackathontime_users/team_view_all.html', context)
