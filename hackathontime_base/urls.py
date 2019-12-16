@@ -34,6 +34,7 @@ urlpatterns = [
     path('team/', users_views.team, name='ht-team'),
     path('team/<slug:team_slug>', users_views.team_view, name='ht-team-view'),
     path('team/join/<str:code>', users_views.team_join, name='ht-team-join'),
+    path('teams/', users_views.team_view_all, name='ht-team-view-all'),
 ]
 
 if settings.DEBUG:

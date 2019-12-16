@@ -338,3 +338,9 @@ def team_join(request, **kwargs):
 
     messages.success(request, f'You successfully joined \'{team_object.team_name}\' team.')
     return redirect('ht-profile')
+
+def team_view_all(request):
+    context = {
+        'teams': Team.objects.all().order_by('team_name') # alphabetically ascending
+    }
+    return render(request, 'hackathontime_users/team_view_all.html', context)
