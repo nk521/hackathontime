@@ -91,3 +91,9 @@ class Profile(models.Model):
 
 #     def __str__(self):
 #         return f'{self.title[:20]} | {self.content[:50]}'
+
+class Comment(models.Model):
+    author = models.ForeignKey(Profile, on_delete=models.DO_NOTHING, blank=True, null=True)
+    comment = models.TextField(max_length=5000)
+    date_posted = models.DateTimeField(default=timezone.now)
+    is_deleted = models.BooleanField(default=False)

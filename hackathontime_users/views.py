@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages # , CreatePostForm
-from .forms import UserForm, ProfileUpdateForm, CreateTeamForm, TeamOverviewForm
+from .forms import UserForm, ProfileUpdateForm, CreateTeamForm, TeamOverviewForm, CommentForm, RegisterHackathonForm, CancelRegistertionForm
 from django.contrib.auth.decorators import login_required
 from .models import Team, Profile  # , Post
 from django.contrib.auth.models import User
@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.urls import reverse
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
@@ -185,8 +186,18 @@ def profile_view(request, **kwargs):
 @login_required
 def hackathon_view(request, **kwargs):
     slug = kwargs['hackathon_slug']
-    hackathon_object = Hackathon.objects.filter(hackathon_slug=slug)
+    try:
+        hackathon_object = Hackathon.objects.filter(hackathon_slug=slug)[0]
+    except:
+        hackathon_object = False
+
     if hackathon_object:
+        context = {
+            'title': f'{hackathon_object.hackathon_name}',
+            'hackathon': hackathon_object,
+            'registered': hackathon_object.hackathon_team_going.filter(team_name=request.user.profile.team),
+        }
+
         if request.method == "POST":
 
             if not request.user.profile.is_active:
@@ -198,24 +209,48 @@ def hackathon_view(request, **kwargs):
                 messages.warning(
                     request, "You're not in a team. Either make one team or join one.")
                 return redirect('ht-register-team')
-            curr_team = request.user.profile.team
-            curr_hackathon = hackathon_object[0]
-            curr_hackathon.hackathon_team_going.add(curr_team)
-            curr_hackathon.save()
-            messages.success(request, f"Marked your team '{curr_team.team_name}' as going.")
 
-        hackathon_object = hackathon_object[0]
-        context = {
-            'title': f'{hackathon_object.hackathon_name}',
-            'hackathon': hackathon_object,
-            'registered': hackathon_object.hackathon_team_going.filter(team_name=request.user.profile.team)
-        }
+            form = RegisterHackathonForm(request.POST)
+            form_cle = CancelRegistertionForm(request.POST)
+            curr_team = request.user.profile.team
+
+            # real sketchy way just like my whole code
+            # some extra checks are there just in case :shrug:
+            if form.is_valid() and form.cleaned_data.get('submit') == "Register":
+                if not context['registered']:
+                    hackathon_object.hackathon_team_going.add(curr_team)
+                    hackathon_object.save()
+                    messages.success(request, f"Marked your team '{curr_team.team_name}' as going.")
+                else:
+                    messages.warning(request, "You're already marked as 'going'.")
+                
+                return redirect(reverse('ht-hackathon-view', kwargs={'hackathon_slug': hackathon_object.hackathon_slug}))
+
+            if form_cle.is_valid() and form_cle.cleaned_data.get('cancel') == "Cancel":
+                if context['registered']:
+                    hackathon_object.hackathon_team_going.remove(curr_team)
+                    hackathon_object.save()
+                    messages.success(request, f"Marked your team '{curr_team.team_name}' as not going.")
+                else:
+                    messages.warning(request, "You're already marked as 'not going'.")
+
+                return redirect(reverse('ht-hackathon-view', kwargs={'hackathon_slug': hackathon_object.hackathon_slug}))
+
+        # add winners
         if hackathon_object.hackathon_past:
             context['winner'] = hackathon_object.hackathon_won
             context['runnerup1'] = hackathon_object.hackathon_runnerup_1
             context['runnerup2'] = hackathon_object.hackathon_runnerup_2
 
+        if not context['registered']:
+            form = RegisterHackathonForm()
+        else:
+            form = CancelRegistertionForm()
+
+        context['form'] = form
+
         return render(request, 'hackathontime_users/hackathon_slug.html', context)
+
     else:
         messages.warning(request, 'Hackathon doesn\'t exists.')
         return redirect('ht-home')

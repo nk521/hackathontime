@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile, Team #, Post
+from .models import Profile, Team, Comment #, Post
+from hackathontime_main.models import Hackathon
 from django.contrib.auth.forms import UserCreationForm
 from colleges import *
 from django.db import models
@@ -64,3 +65,17 @@ class TeamOverviewForm(forms.ModelForm):
 #     class Meta:
 #         model = Post
 #         fields = ['title', 'content']
+
+class CommentForm(forms.ModelForm):
+    comment = forms.CharField(widget=PagedownWidget(), label="Add a comment (Pagedown/Markdown)")
+
+    class Meta:
+        model = Comment
+        fields = ['comment']
+
+# this is really sketchy
+class RegisterHackathonForm(forms.Form):
+    submit = forms.CharField()
+
+class CancelRegistertionForm(forms.Form):
+    cancel = forms.CharField()

@@ -100,11 +100,14 @@
 				    	<div class="col text-center my-auto">
 				    		<div class="container">
 				    			{% if registered %}
-				    				<span class="text-white"><button type="submit" class="btn btn-outline-primary btn-lg" disabled>Already Registered</button></span>
+				    			<form method="POST">
+				    				{% csrf_token %}
+				    				<span class="text-white"><input type="submit" class="btn btn-outline-primary btn-lg" disabled value="Already Registered"><input type="submit" name="cancel" class="btn btn-danger ml-2 btn-lg" value="Cancel"></span>
+				    			</form>
 			    				{% else %}
 					    			<form method="POST">
 					    				{% csrf_token %}
-					    				<span class="text-white"><button type="submit" class="btn btn-outline-primary btn-lg ">Register</button></span>
+					    				<span class="text-white"><input type="submit" name="submit" class="btn btn-outline-primary btn-lg" value="Register"></span>
 					    			</form>
 				    			{% endif %}
 				    		</div>
