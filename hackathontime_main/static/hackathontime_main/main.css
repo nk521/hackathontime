@@ -1,3 +1,5 @@
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+@import url(https://fonts.googleapis.com/css?family=Lato:300,400);
 html,
 body {
   overflow-x: hidden; /* Prevent scroll on narrow devices */
@@ -5,6 +7,8 @@ body {
 
 body {
   padding-top: 56px;
+  font-size: 1rem;
+  font-family: 'Lato', sans-serif;
 }
 
 @media (max-width: 991.98px) {

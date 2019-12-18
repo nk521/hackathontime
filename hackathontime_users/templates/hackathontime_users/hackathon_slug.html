@@ -1,5 +1,6 @@
 {% extends "hackathontime_main/base.html" %}
 {% load markdown_deux_tags %}
+{% load crispy_forms_tags %}
 {% block body %}
 	<div class="content-section">
 		<div class="row">
@@ -35,23 +36,34 @@
 						<legend class="pb-2 border-gray border-bottom">
 							Teams registered
 						</legend>
+						{% if not hackathon.hackathon_team_going.count %}
+							<div class="text-muted text-center"><i>-- No Registrations --</i></div>
+						{% else %}
 						{% for team in hackathon.hackathon_team_going.all %}
 							<div><a href="{% url 'ht-team-view' team.team_slug %}">{{ team.team_name }}</a></div>
 						{% endfor %}
+						{% endif %}
 					{% else %}
 						<div class="row">
 							<div class="col">
 								<legend class="pb-2 border-gray border-bottom">
 									Teams registered
 								</legend>
+								{% if not hackathon.hackathon_team_going.count %}
+									<div class="text-muted text-center"><i>-- No Registrations --</i></div>
+								{% else %}
 								{% for team in hackathon.hackathon_team_going.all %}
 									<div><a href="{% url 'ht-team-view' team.team_slug %}">{{ team.team_name }}</a></div>
 								{% endfor %}
+								{% endif %}
 							</div>
 							<div class="col">
 								<legend class="pb-2 border-gray border-bottom">
 									Score
 								</legend>
+								{% if not hackathon.hackathon_team_going.count %}
+									<div class="text-muted text-center"><i>-- No Registrations --</i></div>
+								{% else %}
 								{% if winner %}
 									<div>1st : <a href="{% url 'ht-team-view' winner.team_slug %}">{{ winner.team_name }}</a></div>
 								{% else %}
@@ -63,10 +75,26 @@
 								{% if runnerup2 %}
 									<div>3rd : <a href="{% url 'ht-team-view' runnerup2.team_slug %}">{{ runnerup2.team_name }}</a></div>
 								{% endif %}
+								{% endif %}
 							</div>
 						</div>
 					{% endif %}
 
+				</div>
+				<div class="my-1 p-3">
+					<legend class="pb-2 border-gray border-bottom">
+						Comments
+					</legend>
+					{% if user.profile.is_active %}
+					<form method="POST">
+					{% csrf_token %}
+					{{ comment_form|crispy }}
+    				<div class="text-right pb-3"><input type="submit" name="comment_submit" class="btn btn-outline-primary btn-lg" value="Comment"></div>
+					</form>
+					{% else %}
+					<div class="text-center text-muted"><i>Please confirm your E-Mail inorder to comment. Check your E-Mail.</i></div>
+					{% endif %}
+					<!-- comments should be here. -->
 				</div>
 			</div>
 			<!-- MAP -->

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Profile, Team, Comment #, Post
-from hackathontime_main.models import Hackathon
+from .models import Profile, Team #, Post
+from hackathontime_main.models import Hackathon, Comment
 from django.contrib.auth.forms import UserCreationForm
 from colleges import *
 from django.db import models
@@ -67,7 +67,9 @@ class TeamOverviewForm(forms.ModelForm):
 #         fields = ['title', 'content']
 
 class CommentForm(forms.ModelForm):
-    comment = forms.CharField(widget=PagedownWidget(), label="Add a comment (Pagedown/Markdown)")
+    # author = forms.CharField()
+    # hackathon = forms.CharField()
+    comment = forms.CharField(max_length=5000, label="Add a comment", required=False)
 
     class Meta:
         model = Comment

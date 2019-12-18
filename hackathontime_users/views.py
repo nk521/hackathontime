@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.core.mail import EmailMessage
 from PIL import Image
-from hackathontime_main.models import Hackathon
+from hackathontime_main.models import Hackathon, Comment
 
 # /register
 def register(request):
@@ -196,6 +196,7 @@ def hackathon_view(request, **kwargs):
             'title': f'{hackathon_object.hackathon_name}',
             'hackathon': hackathon_object,
             'registered': hackathon_object.hackathon_team_going.filter(team_name=request.user.profile.team),
+            'comments': Comment.objects.filter(hackathon=hackathon_object)
         }
 
         if request.method == "POST":
@@ -212,6 +213,7 @@ def hackathon_view(request, **kwargs):
 
             form = RegisterHackathonForm(request.POST)
             form_cle = CancelRegistertionForm(request.POST)
+            comment_form = CommentForm(request.POST)
             curr_team = request.user.profile.team
 
             # real sketchy way just like my whole code
@@ -236,6 +238,14 @@ def hackathon_view(request, **kwargs):
 
                 return redirect(reverse('ht-hackathon-view', kwargs={'hackathon_slug': hackathon_object.hackathon_slug}))
 
+            if comment_form.is_valid():
+                if len(comment_form.cleaned_data.get('comment')):
+                    comment_instance = comment_form.save()
+                    comment_instance.author = request.user.profile
+                    comment_instance.hackathon = hackathon_object
+                    comment_instance.save()
+                    return redirect(reverse('ht-hackathon-view', kwargs={'hackathon_slug': hackathon_object.hackathon_slug}))
+
         # add winners
         if hackathon_object.hackathon_past:
             context['winner'] = hackathon_object.hackathon_won
@@ -247,7 +257,10 @@ def hackathon_view(request, **kwargs):
         else:
             form = CancelRegistertionForm()
 
+        comment_form = CommentForm()
+
         context['form'] = form
+        context['comment_form'] = comment_form
 
         return render(request, 'hackathontime_users/hackathon_slug.html', context)
 
