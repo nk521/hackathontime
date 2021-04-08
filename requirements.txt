@@ -2,7 +2,7 @@ asgiref==3.2.3
 certifi==2019.11.28
 chardet==3.0.4
 defusedxml==0.6.0
-Django==3.0.0
+Django==3.0.14
 django-allauth==0.40.0
 django-crispy-forms==1.8.1
 django-markdown-deux==1.0.5
